@@ -102,17 +102,18 @@
 
             <div id="info_box">
                 <p id="info_start" class="alert alert-success" style="display:none">Click on the microphone icon and begin speaking.</p>
-                <p id="info_upgrade" class="alert alert-error" style="display:none">Web Speech API is not supported by this browser. Upgrade to <a href="http://www.google.com/chrome">Chrome</a> version 25 later.</p>
                 <p id="info_speak_now" class="alert alert-info" style="display:none">Speak now.</p>
                 <p id="info_no_speech" class="alert alert-error" style="display:none">No speech was detected. You may need to adjust your <a href="http://support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892">microphone settings</a>.</p>
                 <p id="info_no_microphone" class="alert alert-error" style="display:none">No microphone was found. Ensure that a microphone is installed and that <a href="http://support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892">microphone settings</a> are configured correctly.</p>
                 <p id="info_allow" class="alert alert-warning" style="display:none">Click the "Allow" button above to enable your microphone.</p>
                 <p id="info_denied" class="alert alert-error" style="display:none">Permission to use microphone was denied.</p>
                 <p id="info_blocked" class="alert alert-error" style="display:none">Permission to use microphone is blocked. To change, go to chrome://settings/contentExceptions#media-stream</p>
+                <p id="info_upgrade" class="alert alert-error" style="display:none">Web Speech API is not supported by this browser. Upgrade to <a href="http://www.google.com/chrome">Chrome</a> version 25 later.</p>
             </div>
             <div id="speech_box">
                 <button id="start_btn"><img alt="Start" id="start_img" src="img/speech/mic.gif"></button>
-                <div id="result"></div>
+                <div id="final_result"></div>
+                <div id="temp_result"></div>
             </div>
 
             <hr>
@@ -138,6 +139,7 @@
         var recognition = null;
 
         var final_transcript = '';
+        var temp_transcript = '';
         var ignore_onend = null;
 
         $( document ).ready(function() {
@@ -165,7 +167,6 @@
 
             });
 
-            console.log('Speech: ' + !('webkitSpeechRecognition' in window));
             if ( !('webkitSpeechRecognition' in window) ) {
                 showInfo('info_upgrade');
             } else {
@@ -180,10 +181,40 @@
                     showInfo('info_speak_now');
                     $('#start_img').attr('src', 'img/speech/mic-animate.gif');
                 };
+
                 recognition.onresult = function(event) {
                     console.log('recognition.onresult');
 
+                    temp_transcript = '';
+                    for (var i = event.resultIndex; i < event.results.length; ++i) {
+                        if (event.results[i].isFinal) {
+                            final_transcript += event.results[i][0].transcript;
+                        } else {
+                            temp_transcript += event.results[i][0].transcript;
+                        }
+                    }
+                    final_transcript = capitalize(final_transcript);
+                    $('#final_result').html(linebreak(final_transcript));
+                    $('#temp_result').html(linebreak(temp_transcript));
                 };
+
+                recognition.onend = function() {
+                    console.log('recognition.onend');
+                    recognizing = false;
+
+                    if (ignore_onend) {
+                        return;
+                    }
+                    $('#start_img').attr('src', 'img/speech/mic.gif');
+
+                    if (!final_transcript) {
+                        showInfo('info_start');
+                        return;
+                    }
+
+                    hideInfo();
+                };
+
                 recognition.onerror = function(event) {
                     console.log('recognition.onerror');
 
@@ -207,30 +238,6 @@
                     }
 
                 };
-                recognition.onend = function() {
-                    console.log('recognition.onend');
-                    recognizing = false;
-                    if (ignore_onend) {
-                        return;
-                    }
-                    $('#start_img').attr('src', 'img/speech/mic.gif');
-
-                    if (!final_transcript) {
-                        showInfo('info_start');
-                        return;
-                    }
-
-                    if (window.getSelection) {
-                        window.getSelection().removeAllRanges();
-                        var range = document.createRange();
-                        range.selectNode(document.getElementById('final_span'));
-                        window.getSelection().addRange(range);
-                    }
-                    if (create_email) {
-                        create_email = false;
-                        createEmail();
-                    }
-                };
             };
 
         });
@@ -243,6 +250,18 @@
             $('#info_box p').each( function( index ) {
                 $(this).hide();
             })
+        }
+
+
+        var two_line = /\n\n/g;
+        var one_line = /\n/g;
+        function linebreak(s) {
+          return s.replace(two_line, '<p></p>').replace(one_line, '<br>');
+        }
+
+        var first_char = /\S/;
+        function capitalize(s) {
+          return s.replace(first_char, function(m) { return m.toUpperCase(); });
         }
         </script>
     </body>
