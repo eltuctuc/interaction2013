@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GLSL Distortion</title>
+</head>
+<body>
+
+<canvas id="viewport" width="640" height="480"></canvas>
+<video id="video" autoplay/>
+
+<script id="fragment" type="x-shader/x-fragment">
+// https://www.shadertoy.com/view/XdfGzH
+
+precision highp float;
+
+uniform vec2 resolution;
+uniform vec4 mouse;
+uniform sampler2D video;
+
+// ====
+//note: period of 2, [-1;1]=/\ 
+float sawtooth( float t ) {
+	return abs(mod(abs(t), 2.0)-1.0);
+}
+
+void main(void)
+{
+	vec2 uv = gl_FragCoord.xy / resolution.xy;
+	
+	//note: domain distortion
+	// Position der Verzerrung (0-1)
+	// Könnt Ihr über ne Variable auch setzen
+	const vec2 ctr = vec2(0.8,0.5);
+	vec2 ctrvec = ctr - uv;
+	float ctrdist = length( ctrvec );
+	ctrvec /= ctrdist;
+	//uv += ctrvec * max(0.0, pow(ctrdist,7.0)-0.0025);
+	
+	// Stärke der Verzerrung
+	// Mit diesen Variablen spielen oder sie aus JS beeinflussen
+	uv += ctrvec * max(0.0, pow(ctrdist,7.0)-0.0025);
+	
+	vec3 t = texture2D( video, vec2(0,1)+vec2(1,-1)*uv ).rgb;
+	
+	//gl_FragColor = vec4(outcol,1.0);
+	gl_FragColor = vec4(t,1.0);
+}
+</script>
+
+<script src="glsl.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+	video = document.getElementById("video");
+	
+	navigator.webkitGetUserMedia({video:true}, gotStream, function() {}); 
+	
+
+  if (!Glsl.supported()) alert("WebGL is not supported.");
+
+  var glsl = Glsl({
+	canvas: document.getElementById("viewport"),
+	fragment: document.getElementById("fragment").textContent,
+	variables: {
+		time: 0,
+		video: video
+	},
+	update: function (time) {
+		this.set("time", time);
+		this.sync("video");
+	}
+	}).start();
+
+
+	function gotStream(stream) {
+		video.src = webkitURL.createObjectURL(stream);
+		console.debug("got stream");
+	}
+</script>
+</body>
+</html>
