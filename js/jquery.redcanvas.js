@@ -26,7 +26,17 @@
 				.attr('width', $(document).width())
 				.attr('height', $(document).height());*/
 
-			this.context = (document.getElementById(this.canvas.attr('id'))).getContext('2d');
+			var canvas = document.getElementById(this.canvas.attr('id'));
+			if (!canvas) {
+				console.log('No canvas found!');
+				console.log(this.canvas);
+				return false;
+			};
+			if (!canvas.getContext('2d')) {
+				console.log('No context found in canvas!');
+				return false;
+			};
+			this.context = canvas.getContext('2d');
 			this.bgImg = new Image();
 			this.bgImg.src = this.settings.img;
 
@@ -44,6 +54,10 @@
 			this.context.drawImage(this.bgImg,0,0,width,height);
 			this.context.fillStyle = 'rgb(255, 0, 0)';
 			this.context.fillRect(20, height-(height*0.2), width/30, height*0.2);
+		}
+
+		getCanvas : function () {
+			return this.context;
 		}
 	};
 }( jQuery ));

@@ -43,10 +43,25 @@
         <script>
 
         $(document).ready(function($) {
-            RedCanvas.init({
-                canvas: $('#canvas'),
-                img: 'img/testbild.jpg',
+            var fragmentShaderSRC = null;
+            var vertexShaderSRC = null;
+            
+            $.ajax({
+                async: false,
+                url: './js/shaders/simple.fs',
+                success: function (data) {
+                    fragmentShaderSRC = data;
+                },
+                dataType: 'text'
             });
+
+
+            RedCanvas.init({
+                canvas : $('#canvas'),
+                img : 'img/testbild.jpg',
+            });
+
+            var canvas = RedCanvas.getCanvas();
         });
         </script>
     </body>
