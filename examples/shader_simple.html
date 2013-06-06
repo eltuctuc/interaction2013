@@ -18,7 +18,7 @@
             }
         </style>
         <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
-        <link rel="stylesheet" href="css/main_shader.css">
+        <link rel="stylesheet" href="css/main_gradient.css">
 
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     </head>
@@ -39,6 +39,30 @@
         <script src="js/vendor/bootstrap.min.js"></script>
 
         <script src="js/plugins.js"></script>
-        <script src="js/main_shader.js"></script>
+        <script src="js/jquery.redcanvas.js"></script>
+        <script>
+
+        $(document).ready(function($) {
+            var fragmentShaderSRC = null;
+            var vertexShaderSRC = null;
+            
+            $.ajax({
+                async: false,
+                url: './js/shaders/simple.fs',
+                success: function (data) {
+                    fragmentShaderSRC = data;
+                },
+                dataType: 'text'
+            });
+
+
+            RedCanvas.init({
+                canvas : $('#canvas'),
+                img : 'img/testbild.jpg',
+            });
+
+            var canvas = RedCanvas.getCanvas();
+        });
+        </script>
     </body>
 </html>
