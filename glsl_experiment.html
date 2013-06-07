@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GLSL Distortion</title>
+</head>
+<body>
+
+<canvas id="viewport" width="640" height="480"></canvas>
+<video id="video" autoplay/>
+
+<script id="fragment" type="x-shader/x-fragment" src="js/shaders/glsl.fs"></script>
+<script id="fragment2" type="x-shader/x-fragment">
+#ifdef GL_ES
+precision mediump float;
+#endif
+uniform float time;
+uniform vec2 resolution;
+
+void main (void) {
+  vec2 p = ( gl_FragCoord.xy / resolution.xy );
+  gl_FragColor = vec4(p.x, p.y, (1.+cos(time/1000.))/2., 1.0);
+}
+</script>
+
+<script src="js/vendor/jquery-1.9.1.min.js"></script>
+<script src="js/vendor/glsl.min.js"></script>
+<script type="text/javascript">
+	var video, glsl;
+	$(document).ready(function() {
+
+		video = document.getElementById("video");
+
+		window.URL = window.URL || window.webkitURL;
+
+		if (!Glsl.supported()) alert("WebGL is not supported.");
+
+		glsl = Glsl({
+			canvas: document.getElementById("viewport"),
+			fragment: document.getElementById("fragment2").textContent,
+			variables: {
+				time: 0,
+				video: video
+			},
+			update: function (time) {
+				this.set("time", time);
+				this.sync(video);
+			}
+		}).start();
+
+	});
+</script>
+</body>
+</html>
