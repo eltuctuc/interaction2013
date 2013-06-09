@@ -3,50 +3,153 @@
 <head>
   <meta charset="UTF-8">
   <title>GLSL Distortion</title>
+
+  <style type="text/css">
+  body {
+  	margin: 0;
+  	padding: 0;
+  }
+
+  #viewport {
+  	xwidth: 100%;
+  	xheight: 100%;
+  }
+  #image {
+  	display:none;
+  }
+  #video {
+  	display:block;
+  }
+  </style>
 </head>
 <body>
 
-<canvas id="viewport" width="640" height="480"></canvas>
-<video id="video" autoplay/>
+<canvas id="viewport" width="320" height="240"></canvas>
+<img id="image" src="img/testbild.jpg" />
+<video id="webcam" autoplay />
+<video id="video" controls>
+  Your browser does not support the video tag. :(
+  <source src="video/big_buck_bunny_480p.ogg" type="video/ogg" />
+</video>
 
-<script id="fragment" type="x-shader/x-fragment" src="js/shaders/glsl.fs"></script>
-<script id="fragment2" type="x-shader/x-fragment">
-#ifdef GL_ES
+<script id="simpleFragment" type="x-shader/x-fragment">
 precision mediump float;
-#endif
-uniform float time;
 uniform vec2 resolution;
+uniform float time;
+uniform sampler2D video;
+
+void main () {
+	gl_FragColor.r = 1.0;
+	gl_FragColor.g = 0.8;
+	gl_FragColor.b = 0.5;
+	gl_FragColor.a = 1.0;
+
+	gl_FragColor = vec4(1.0, 0.8, 0.5, 1.0);
+}
+</script>
+<script id="videoFragment" type="x-shader/x-fragment">
+precision highp float;
+
+uniform vec2 resolution;
+uniform float time;
+uniform sampler2D video;
+
+
+// ====
+//note: period of 2, [-1;1]=/\ 
+float sawtooth( float t ) {
+	return abs(mod(abs(t), 2.0)-1.0);
+}
 
 void main (void) {
-  vec2 p = ( gl_FragCoord.xy / resolution.xy );
-  gl_FragColor = vec4(p.x, p.y, (1.+cos(time/1000.))/2., 1.0);
+	vec2 uv = gl_FragCoord.xy / resolution.xy;
+
+	
+	//note: domain distortion
+	// Position der Verzerrung (0-1)
+	// Könnt Ihr über ne Variable auch setzen
+	const vec2 ctr = vec2(0.8,0.5);
+	vec2 ctrvec = ctr - uv;
+	float ctrdist = length( ctrvec );
+	ctrvec /= ctrdist;
+	//uv += ctrvec * max(0.0, pow(ctrdist,7.0)-0.0025);
+	
+	// Stärke der Verzerrung
+	// Mit diesen Variablen spielen oder sie aus JS beeinflussen
+	uv += ctrvec * max(0.0, pow(ctrdist,7.0)-0.0025);
+	
+	vec3 t = texture2D( video, vec2(0,1)+vec2(1,-1)*uv ).rgb;
+	
+	//gl_FragColor = vec4(outcol,1.0);
+	gl_FragColor = vec4(t,1.0);
+	
+	//gl_FragColor = vec4(1.0, 0.8, 0.5, 1.0);
 }
 </script>
 
 <script src="js/vendor/jquery-1.9.1.min.js"></script>
-<script src="js/vendor/glsl.min.js"></script>
+<script src="js/vendor/glsl.js"></script>
 <script type="text/javascript">
-	var video, glsl;
+	var image, video, glsl;
 	$(document).ready(function() {
 
-		video = document.getElementById("video");
-
 		window.URL = window.URL || window.webkitURL;
+		navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+		navigator.getUserMedia({video:true,audio:false}, gotStream, gotError);
 
-		if (!Glsl.supported()) alert("WebGL is not supported.");
+		if (!Glsl.supported()) alert('WebGL is not supported.');
 
-		glsl = Glsl({
-			canvas: document.getElementById("viewport"),
-			fragment: document.getElementById("fragment2").textContent,
-			variables: {
-				time: 0,
-				video: video
-			},
-			update: function (time) {
-				this.set("time", time);
-				this.sync(video);
-			}
-		}).start();
+		video = document.getElementById('video');
+		video.addEventListener("canplaythrough", function () {
+			//video.play();
+		});
+
+		webcam = document.getElementById('webcam');
+		webcam.addEventListener("canplaythrough", function () {
+			console.log('Webcam play');
+			webcam.play();
+
+			setTimeout(function() {
+				initGlsl();
+				startGlsl();
+			}, 3000);
+		});
+		webcam.addEventListener("loadedmetadata", function () {
+			console.log('Something happened. Do some stuff');
+		});
+
+		image = document.getElementById('image');
+
+		function initGlsl() {
+			glsl = Glsl({
+				canvas: document.getElementById('viewport'),
+				fragment: document.getElementById('videoFragment').textContent,
+				variables: {
+					time: 1000,
+					video: webcam
+				},
+				update: function (time) {
+					this.set("time", time);
+					this.sync("video");
+				}
+			});
+		}
+
+		function startGlsl() {
+			glsl.start();
+		}
+
+		function gotStream(stream) {
+			webcam.src = window.URL.createObjectURL(stream);
+			localMediaStream = stream;
+			//video.src = webkitURL.createObjectURL(stream);
+			//console.debug("got stream");
+
+		}
+
+		function gotError() {
+			console.log("error happened");
+		}
 
 	});
 </script>
