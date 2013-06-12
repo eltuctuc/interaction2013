@@ -1,0 +1,267 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GLSL Distortion</title>
+
+  <style type="text/css">
+  body {
+  	margin: 0;
+  	padding: 0;
+  }
+
+  #viewport {
+  	width: 100%;
+  	height: 100%;
+  }
+  #image {
+  	display:none;
+  }
+  #video {
+  	display:block;
+  	border: thin solid;
+  }
+  #webcam {
+  	display:none;
+  }
+  </style>
+</head>
+<body>
+
+<canvas id="viewport" width="320" height="240"></canvas>
+<img id="image" src="img/testbild.jpg" />
+<video id="webcam" autoplay />
+<video id="video" controls>
+  Your browser does not support the video tag. :(
+  <source src="video/trailer.webm" type="video/webm" />
+</video>
+
+<script id="simpleFragment" type="x-shader/x-fragment">
+precision mediump float;
+uniform vec2 resolution;
+uniform float time;
+uniform sampler2D video;
+
+void main () {
+	gl_FragColor.r = 1.0;
+	gl_FragColor.g = 0.8;
+	gl_FragColor.b = 0.5;
+	gl_FragColor.a = 1.0;
+
+	gl_FragColor = vec4(1.0, 0.8, 0.5, 1.0);
+}
+</script>
+<script id="videoFragment" type="x-shader/x-fragment">
+precision highp float;
+
+uniform vec2 resolution;
+uniform float time;
+uniform sampler2D video;
+
+
+// ====
+//note: period of 2, [-1;1]=/\ 
+float sawtooth( float t ) {
+	return abs(mod(abs(t), 2.0)-1.0);
+}
+
+void main (void) {
+	vec2 uv = gl_FragCoord.xy / resolution.xy;
+
+	
+	//note: domain distortion
+	// Position der Verzerrung (0-1)
+	// Könnt Ihr über ne Variable auch setzen
+	const vec2 ctr = vec2(0.0,0.5);
+	vec2 ctrvec = ctr - uv;
+	float ctrdist = length( ctrvec );
+	ctrvec /= ctrdist;
+	//uv += ctrvec * max(0.0, pow(ctrdist,7.0)-0.0025);
+	
+	// Stärke der Verzerrung
+	// Mit diesen Variablen spielen oder sie aus JS beeinflussen
+	uv += ctrvec * max(0.0, pow(ctrdist,7.0)-0.0025);
+	
+	vec3 t = texture2D( video, vec2(0,1)+vec2(1,-1)*uv ).rgb;
+	
+	//gl_FragColor = vec4(outcol,1.0);
+	gl_FragColor = vec4(t,1.0);
+	
+	//gl_FragColor = vec4(1.0, 0.8, 0.5, 1.0);
+}
+</script>
+<script id="distortionFragment" type="x-shader/x-fragment">
+#ifdef GL_ES
+precision mediump float;
+#endif
+uniform float time;
+//uniform vec2 resolution;
+
+//void main (void) {
+  //vec2 p = ( gl_FragCoord.xy / resolution.xy );
+  //gl_FragColor = vec4(p.x, p.y, (1.+cos(time/1000.))/2., 1.0);
+//}
+
+// https://www.shadertoy.com/view/XdfGzH
+
+precision highp float;
+
+uniform vec2 resolution;
+uniform vec4 mouse;
+uniform sampler2D video;
+
+// ====
+//note: period of 2, [-1;1]=/\ 
+float sawtooth( float t ) {
+	return abs(mod(abs(t), 2.0)-1.0);
+}
+
+void main(void)
+{
+	vec2 uv = gl_FragCoord.xy / resolution.xy;
+	
+	//note: domain distortion
+	// Position der Verzerrung (0-1)
+	// Könnt Ihr über ne Variable auch setzen
+	const vec2 ctr = vec2(0.5,0.5);
+	vec2 ctrvec = ctr - uv;
+	float ctrdist = length( ctrvec );
+	ctrvec /= ctrdist;
+	
+	// Stärke der Verzerrung
+	// Mit diesen Variablen spielen oder sie aus JS beeinflussen
+	uv += ctrvec * max(0.0, pow(ctrdist,4.0)-0.0025);
+	
+	vec3 t = texture2D( video, vec2(0,1)+vec2(1,-1)*uv ).rgb;
+	
+	//gl_FragColor = vec4(outcol,1.0);
+	gl_FragColor = vec4(t,1.0);
+}
+</script>
+<script id="distortionFragment2" type="x-shader/x-fragment">#ifdef GL_ES
+precision mediump float;
+#endif
+uniform float time;
+
+precision highp float;
+
+uniform vec2 resolution;
+uniform vec4 mouse;
+uniform sampler2D video;
+
+// ====
+//note: period of 2, [-1;1]=/\ 
+float sawtooth( float t ) {
+	return abs(mod(abs(t), 2.0)-1.0);
+}
+
+void main(void)
+{
+	vec2 uv = gl_FragCoord.xy / resolution.xy;
+	
+	//note: domain distortion
+	const vec2 ctr = vec2(0.5,0.5);
+	vec2 ctrvec = ctr - uv;
+	float ctrdist = length( ctrvec );
+	ctrvec /= ctrdist;
+	uv += ctrvec * max(0.0, pow(ctrdist,2.0)-0.0025);
+	
+	vec3 outcol = vec3(0.0);
+	outcol += texture2D( video, vec2(0,1)+vec2(1,-1)*uv ).rgb;
+
+	//note: force black outside valid range	
+	vec2 valid = step( vec2(0.0), uv ) * step( uv, vec2(1.0) );
+	outcol *= valid.x*valid.y;
+	
+	gl_FragColor = vec4(outcol,1.0);
+}
+</script>
+
+<script src="js/vendor/jquery-1.9.1.min.js"></script>
+<script src="js/vendor/glsl.js"></script>
+<script type="text/javascript">
+	var glsl;
+	var mouse, mousePressed;
+	var texture, image, webcam, video;
+	var colorMap, noiseMap, texMatrix; 
+	$(document).ready(function() {
+
+		$(document)
+			.bind('mousemove', function (e) {
+				mouse = new Vec4(e.pageX, e.pageY, 0, 0);
+			})
+			.bind('mousePressed', function (e) {
+				mousePressed = new Vec2(1, 1);
+			})
+		;
+
+		window.URL = window.URL || window.webkitURL;
+		navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+		navigator.getUserMedia({video:true,audio:false}, gotStream, gotError);
+
+		if (!Glsl.supported()) alert('WebGL is not supported.');
+
+		video = document.getElementById('video');
+		video.addEventListener("canplaythrough", function () {
+			console.log('Video play');
+			//video.play();
+		});
+
+		webcam = document.getElementById('webcam');
+		webcam.addEventListener("canplaythrough", function () {
+			console.log('Webcam play');
+			webcam.play();
+		});
+		webcam.addEventListener("loadedmetadata", function () {
+			console.log('Something happened. Do some stuff');
+
+			setTimeout(function() {
+				initGlsl();
+			}, 2000);
+		});
+
+		image = document.getElementById('image');
+
+		mouse = new Vec4(0,0,0,0);
+		mousePressed = new Vec2(0,0);
+
+		function initGlsl() {
+			glsl = Glsl({
+				canvas: document.getElementById('viewport'),
+				fragment: document.getElementById('distortionFragment2').textContent,
+				variables: {
+					time: 1000,
+					video: webcam,
+					mouse: mouse,
+				},
+				update: function (time) {
+					this.set('time', time);
+					this.sync('video','mouse');
+				}
+			}).start();
+		}
+
+		function gotStream(stream) {
+			webcam.src = window.URL.createObjectURL(stream);
+			localMediaStream = stream;
+		}
+
+		function gotError() {
+			console.log("error happened");
+		}
+
+	});
+	
+	function Vec2(x, y) {
+		this.x = x,
+		this.y = y;
+	}
+	function Vec4(x, y, z, w) {
+		this.x = x,
+		this.y = y;
+		this.z = z;
+		this.w = w;
+	}
+</script>
+</body>
+</html>
