@@ -1,0 +1,200 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Prcessing Filter</title>
+  <style type="text/css">
+  body {
+  	margin: 0;
+  	padding: 0;
+  }
+
+  #viewport {
+  	width: 100%;
+  	height: 100%;
+  }
+  #image {
+  	display:none;
+  }
+  #webcam {
+  	display:none;
+  }
+  </style>
+</head>
+<body>
+
+<canvas id="viewport" width="640" height="480"></canvas>
+<img id="image" src="img/testbild.jpg" />
+<img id="texture" src="" />
+<video id="webcam" autoplay />
+
+<script src="js/vendor/jquery-1.9.1.min.js"></script>
+<script src="js/vendor/glsl.js"></script>
+<script type="text/javascript">
+
+	var glsl;
+	var mouse, mousePressed;
+	var texture, image, webcam, video;
+	var textMatrix, colorMap, noiseMap; 
+	$(document).ready(function() {
+
+		$(document)
+			.bind('mousemove', function (e) {
+				mouse = new Vec4(e.pageX, e.pageY, 0, 0);
+			})
+			.bind('mousePressed', function (e) {
+				mousePressed = new Vec2(1, 1);
+			})
+		;
+
+		window.URL = window.URL || window.webkitURL;
+		navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+		navigator.getUserMedia({video:true,audio:false}, gotStream, gotError);
+
+		if (!Glsl.supported()) alert('WebGL is not supported.');
+
+		//video = document.getElementById('video');
+		//video.addEventListener("canplaythrough", function () {
+			//console.log('Video play');
+			//video.play();
+		//});
+
+		webcam = document.getElementById('webcam');
+		webcam.addEventListener("canplaythrough", function () {
+			console.log('Webcam play');
+			webcam.play();
+		});
+		webcam.addEventListener("loadedmetadata", function () {
+			console.log('Something happened. Do some stuff');
+
+			setTimeout(function() {
+				initGlsl();
+			}, 2000);
+		});
+
+		image = document.getElementById('image');
+		texture = document.getElementById('texture');
+
+		mouse = new Vec4(0,0,0,0);
+		mousePressed = new Vec2(0,0);
+
+		texMatrix = new Mat4(16);
+
+		function initGlsl() {
+			glsl = Glsl({
+				canvas: document.getElementById('viewport'),
+				fragment: document.getElementById('fragment').textContent,
+				variables: {
+					time: 1000,
+					//video: webcam,
+					mouse: mouse,
+					mousePressed: mousePressed,
+					texture: texture,
+					texMatrix: texMatrix,
+					colorMap: webcam,
+					noiseMap: image
+				},
+				update: function (time) {
+					this.set('time', time);
+					//this.sync('video','mouse');
+					this.sync('colorMap','noiseMap','mouse');
+				}
+			}).start();
+		}
+
+		function gotStream(stream) {
+			webcam.src = window.URL.createObjectURL(stream);
+			localMediaStream = stream;
+		}
+
+		function gotError() {
+			console.log("error happened");
+		}
+
+	});
+	
+	function Vec2(x, y) {
+		this.x = x;
+		this.y = y;
+	}
+	function Vec4(x, y, z, w) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.w = w;
+	}
+
+	function Mat4(p0) {
+		this.length = p0.length || p0;
+		for(var i=0; i<this.length; i++) {
+			this[i] = p0[i] || 001;
+		}
+	}
+</script>
+<script id="fragment" type="x-shader/x-fragment">
+//#ifdef GL_ES
+//precision mediump float;
+//#endif
+//uniform float time;
+//uniform vec2 resolution;
+
+//void main (void) {
+  //vec2 p = ( gl_FragCoord.xy / resolution.xy );
+  //gl_FragColor = vec4(p.x, p.y, (1.+cos(time/1000.))/2., 1.0);
+//}
+
+
+// STRETCH
+// Based on "wowwow" https://www.shadertoy.com/view/4slGR8 by dawik
+
+#ifdef GL_ES
+precision mediump float;
+precision mediump int;
+#endif
+
+// Type of shader expected by Processing
+#define PROCESSING_TEXTURE_SHADER
+
+// Processing specific input
+uniform float time;
+uniform vec2 resolution;
+uniform vec2 mouse;
+
+// Layer between Processing and Shadertoy uniforms
+uniform sampler2D texture;
+uniform mat4 texMatrix;
+
+varying vec4 vertColor;
+varying vec4 vertTexCoord;
+
+uniform vec2 mousePressed; // (0.0,0.0) no click, (1.0,1.0) left mouse button pressed
+vec4 iMouse = vec4(mouse.xy,mousePressed.xy);
+
+uniform sampler2D colorMap;
+uniform sampler2D noiseMap;
+
+// ------- Below is the unmodified Shadertoy code ----------
+
+const float pi  = 3.14159265359;
+void main(void)
+{
+	vec3 noiseVec;
+	vec2 displacement;
+	float scaledTimer;
+
+	displacement = vertTexCoord.st;
+
+	scaledTimer = time *0.1;
+
+	//displacement.x = 0.001; //+= scaledTimer;
+	//displacement.y = 1.0; //mouse[1]*0.1; //-= scaledTimer;
+
+	noiseVec = normalize(texture2D(noiseMap, displacement.xy).xyz);
+	noiseVec = (noiseVec * 2.0 - 1.0) * 0.035;
+	
+	gl_FragColor = texture2D(colorMap, vertTexCoord.st + noiseVec.xy);
+	
+}
+</script>
+</body>
+</html>
