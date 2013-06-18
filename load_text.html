@@ -42,6 +42,15 @@
 
         <script type="text/javascript">
 
+        var grid = [];
+        for (var x = 0; x < 25; x++) {
+            grid[x] = [];
+            for (var y = 0; y < 22; y++) {
+                grid[x][y] = 0
+            };
+        };
+
+
         $(document).ready(function($) {
             // Check for the various File API support.
             if (!(window.File && window.FileReader && window.FileList && window.Blob)) {
@@ -64,8 +73,8 @@
                         var content = e.target.result;
                         var name = escape(f.name);
 
-                        content = content.replace(/\r\n/g,'');
-                        content = content.replace(/ /g,'');
+                        //content = content.replace(/\r\n/g,'');
+                        //content = content.replace(/ /g,'');
 
 
                         // Render thumbnail.
@@ -78,6 +87,14 @@
                         var json = JSON.parse(content);
 
                         console.log(json);
+                        
+                        for (var x = 0; x < 25; x++) {
+                            grid[x] = [];
+                            for (var y = 0, v=0; y < 22; y++, v++) {
+                                grid[x][y] = json.diseases.glaucoma[v];
+                            };
+                        };
+                        console.log(grid);
                     };
                 })(file);
 
