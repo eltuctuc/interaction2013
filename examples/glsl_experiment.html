@@ -11,8 +11,8 @@
   }
 
   #viewport {
-  	width: 100%;
   	height: 100%;
+  	width: 100%;
   }
   #image {
   	display:none;
@@ -28,7 +28,7 @@
 </head>
 <body>
 
-<canvas id="viewport" width="320" height="240"></canvas>
+<canvas id="viewport"></canvas>
 <img id="image" src="img/testbild.jpg" />
 <video id="webcam" autoplay />
 <video id="video" controls>
@@ -178,7 +178,7 @@ void main(void)
 </script>
 
 <script src="js/vendor/jquery-1.9.1.min.js"></script>
-<script src="js/vendor/glsl.js"></script>
+<script src="js/vendor/glsl.min.js"></script>
 <script type="text/javascript">
 	var glsl;
 	var mouse, mousePressed;
@@ -217,8 +217,9 @@ void main(void)
 
 			setTimeout(function() {
 				initGlsl();
-			}, 2000);
+			}, 10000);
 		});
+
 
 		image = document.getElementById('image');
 
@@ -226,17 +227,22 @@ void main(void)
 		mousePressed = new Vec2(0,0);
 
 		function initGlsl() {
+			if (document.getElementById('viewport').getContext('2d')) {
+				var context = document.getElementById('viewport').getContext('2d');
+				context.canvas.width = $(document).width();
+		        context.canvas.height = $(document).height();	
+			};
+			
 			glsl = Glsl({
 				canvas: document.getElementById('viewport'),
-				fragment: document.getElementById('distortionFragment2').textContent,
+				fragment: document.getElementById('videoFragment').textContent,
 				variables: {
 					time: 1000,
 					video: webcam,
-					mouse: mouse,
 				},
 				update: function (time) {
 					this.set('time', time);
-					this.sync('video','mouse');
+					this.sync('video');
 				}
 			}).start();
 		}

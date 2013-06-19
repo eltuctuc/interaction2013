@@ -1,0 +1,84 @@
+<html>
+<head>
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+<link rel="stylesheet" href="css/style_interface.css" type="text/css">
+
+</head>
+<body>
+<div id="page_1">
+	<div id="choose">
+			
+				<div id="data"><a href="#"><span style="line-height: 20px; padding-top: -10px;">Patientendaten</span></a></div>
+				<div id="nodata"><a href="#"><span style="line-height: 20px; padding-top: -10px;">Beispieldaten</span></a></div>
+			
+	</div>
+</div>
+<div id="page_3">
+	<div id="interface_wrapper">
+
+		<div id="interface">
+		
+			<div class="start_button">
+				<a href="#" ><img src="img/start_button.png" /></a>
+			</div>
+			
+			<div class="slider">
+				<h1>Regeln Sie hier die Intensität Ihrer Erkrankung:</h1><br />
+				<br />
+				<br />
+				<input type="range"></input>
+			</div>
+			
+			<div class="checkboxen">
+				<h1>Kreuzen Sie die Krankheit/en für Ihre Simulation an:</h1><br />
+				<br />
+				<br />
+				<input type="checkbox" id="c1" name="cc" />
+				<label for="c1"><span></span>Krankheit 1</label><br />
+				<br />
+				<input type="checkbox" id="c2" name="cc" />
+				<label for="c2"><span></span>Krankheit 2</label><br />
+				<br />
+				<input type="checkbox" id="c3" name="cc" />
+				<label for="c3"><span></span>Krankheit 3</label><br />
+				<br />
+				<input type="checkbox" id="c4" name="cc" />
+				<label for="c4"><span></span>Krankheit 4</label><br />
+				<br />
+				<input type="checkbox" id="c5" name="cc" />
+				<label for="c5"><span></span>Krankheit 5</label><br />
+				<br />
+				<input type="checkbox" id="c6" name="cc" />
+				<label for="c6"><span></span>Krankheit 6</label><br />
+				<br />
+				<input type="checkbox" id="c7" name="cc" />
+				<label for="c7"><span></span>Krankheit 7</label><br />
+				<br />
+				<input type="checkbox" id="c8" name="cc" />
+				<label for="c8"><span></span>Krankheit 8</label><br />
+				<br />
+			</div>
+			
+		</div>
+		
+	</div>
+	<img class="button" src="img/button_einstellungen.png" />
+	<script type="text/javascript">
+
+	var status = 0;
+
+	$('.button').click(function(){
+		if (status == 0) {
+			$('#interface_wrapper').slideDown();
+			status = 1;
+		}else{
+			$('#interface_wrapper').slideUp();
+			status = 0;
+		}
+	});
+
+	</script>
+</div>
+
+</body>
+</html>
