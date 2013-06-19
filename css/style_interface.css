@@ -21,9 +21,9 @@ h1 {
 }
 
 #description h1  {
-	font-family: tahoma;
+	font-family: Arial;
 	color: #3c3e40;
-	font-size: 14px;
+	font-size: 18px;
 	font-weight: bold;
 	padding-bottom: 15px;
 }
@@ -35,9 +35,9 @@ h1 {
 	top: 0px;
 	padding: 20px;
 	background-color: rgba(255,255,255,0.75);
-	font-family: tahoma;
+	font-family: Arial;
 	color: #3c3e40;
-	font-size: 12px;
+	font-size: 14px;
 	line-height:18px;
 }
 
@@ -97,8 +97,9 @@ h1 {
 	text-align: center;
 	color: #3c3e40;
 	text-decoration: none;
-	font-family: tahoma;
-	font-size: 20px;
+	font-family: Arial;
+	font-weight: bold;
+	font-size: 18px;
 }
 
 #page_3 {
