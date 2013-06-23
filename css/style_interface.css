@@ -16,7 +16,8 @@ h1 {
 	right: 0;
 	left: 0;
 	bottom: 0;
-	background-image: url(../img/start_bg.jpg);
+	background: black  url(../img/start_bg.jpg) center center no-repeat;
+	background-size: 100%;
 	/*display: none;*/
 }
 
