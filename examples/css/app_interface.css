@@ -1,0 +1,162 @@
+body {
+	background: #3c3e40;
+	color: white;
+	margin: 0;
+	padding: 0;
+}
+
+#page_1, #page_2, #page_3 {
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	background-color: #3c3e40;
+	background-size: 100%;
+}
+#page_1 {
+	background: black  url(../img/start_bg.jpg) center center no-repeat;
+}
+#page_2 {
+}
+#page_3 {
+}
+
+.choose {
+	position: absolute;
+	width: 700px;
+	height: 700px;
+	top: 50%;
+	left: 50%;
+	margin: -325px 0px 0px -350px;
+}
+
+.choose .description  {
+	padding: 20px;
+	background-color: rgba(255,255,255,0.75);
+	color: #3c3e40;
+}
+
+.choose .box {
+	position: absolute;
+	top: 250px;
+	width: 300px;
+	text-align: center;
+}
+
+.choose .box.left {
+	left: 0;
+}
+
+.choose .box.right {
+	right: 0;
+}
+
+.choose .box.center {
+	left: 50%;
+	margin-left: -150px;
+}
+
+.choose .box a {
+	display: block;
+	background-color: rgba(255,255,255,0.75);
+	margin-bottom: 10px;
+	text-align: center;
+	color: #3c3e40;
+	text-decoration: none;
+	font-size: 20px;
+	font-weight: bold;
+	padding: 50px 0 50px;
+}
+
+.interface_wrapper {
+	position: relative;
+	background: black;
+	text-align: left;
+}
+.interface_wrapper .interface {
+	margin: auto;
+}
+.interface_wrapper h2 {
+	font-size: 1em;
+}
+.interface_wrapper .button {
+	display: block;
+	width: 200px;
+	margin: 30px 0 30px;
+	background: rgb(60, 62, 64);
+	color: white;
+	font-weight: lighter;
+	text-align: center;
+	vertical-align: middle;
+	border-radius: 3px;
+	text-decoration: none;
+}
+.interface_wrapper .dropdown {
+	position: relative;
+	width: 200px;
+	line-height: 20px;
+	left: 50%;
+	margin-left: -100px;
+	background: black;
+}
+.interface_wrapper .dropdown:after {
+	content: "";
+	position: absolute;
+	width: 0;
+	height: 0;
+	border-width: 20px;
+	border-color: transparent;
+	border-style: solid;
+	border-top-color: black;
+	bottom: -40px;
+	left: 80px;
+}
+.interface_wrapper .dropdown a {
+	display: block;
+	text-transform: uppercase;
+	text-align: center;
+	text-decoration: none;
+	color: white;
+	padding: 20px 10px 10px;
+}
+
+.slider_strength {
+	_width: 600px;
+}
+
+/* RANGE SLIDER */
+.slider-handle {
+  background: rgb(101, 227, 242);
+  opacity: 1;
+}
+.slider .tooltip-inner {
+  background: rgb(31, 69, 73);
+  color: rgb(255, 255, 255);
+}
+.slider input[type=range] {
+  visibility: hidden;
+}
+
+/* SLIDE TOGGLE BUTTON */
+.slideThree {
+	width: 130px;
+	margin: 20px 0;
+}
+.slideThree:before {
+  color: rgb(101, 227, 242);
+  content: "AN";
+}
+.slideThree:after {
+  color: rgb(101, 227, 242);
+  content: "AUS";
+}
+.slideThree label {
+	width: 80px;
+	color: #3c3e40;
+	padding: 0 3px;
+	text-align: center;
+}
+.slideThree input[type=checkbox]:checked + label {
+	left: 43px;
+}
