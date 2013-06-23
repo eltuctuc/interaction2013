@@ -18,7 +18,7 @@ h1 {
 	bottom: 0;
 	background: black  url(../img/start_bg.jpg) center center no-repeat;
 	background-size: 100%;
-	/*display: none;*/
+	display: none;
 }
 
 #description h1  {
@@ -109,7 +109,7 @@ h1 {
 	right: 0;
 	left: 0;
 	bottom: 0;
-	display: none;
+	display: block;
 }
 
 #interface_wrapper {
