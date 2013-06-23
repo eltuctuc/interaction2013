@@ -1,0 +1,138 @@
+body {
+	background: #3c3e40;
+	color: white;
+	margin: 0;
+	padding: 0;
+}
+
+#page_1 {
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	background: black  url(../img/start_bg.jpg) center center no-repeat;
+	background-size: 100%;
+}
+
+#choose {
+	position: absolute;
+	width: 700px;
+	height: 700px;
+	top: 50%;
+	left: 50%;
+	margin: -325px 0px 0px -350px;
+}
+
+#choose .description  {
+	padding: 20px;
+	background-color: rgba(255,255,255,0.75);
+	color: #3c3e40;
+}
+
+#choose .box {
+	position: absolute;
+	top: 250px;
+	width: 300px;
+	text-align: center;
+}
+
+#choose .box.data {
+	left: 0;
+}
+
+#choose .box.nodata {
+	right: 0;
+}
+
+#choose .box a {
+	display: block;
+	background-color: rgba(255,255,255,0.75);
+	margin-bottom: 10px;
+	text-align: center;
+	color: #3c3e40;
+	text-decoration: none;
+	font-size: 20px;
+	font-weight: bold;
+	padding: 50px 0 50px;
+}
+
+#page_3 {
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	display: none;
+}
+
+#interface_wrapper {
+	width:100%;
+	height:300px;
+	background-color: black;
+	color: white;
+	font-family: tahoma;
+	font-size: 12px;
+	display: none;
+}
+
+.button {
+	width: 200px;
+	height: 75px;
+	display: block;
+    margin-left: auto;
+    margin-right: auto
+	}
+	
+#interface {
+	position: relative;
+	width: 1000px;
+	height: 300px;
+	margin: auto;
+}
+	
+.checkboxen {
+	position: absolute;
+	top:30px;
+	right: 50px;
+	width: 300px;
+	height:200px;
+}
+
+.start_button {
+	position: absolute;
+	width: 200px;
+	height:46px;
+	top: 30px;
+	left: 50px;
+}
+
+.start_button img {
+	border: 0px;
+}
+
+.slider {
+	position: absolute;
+	width:250px;
+	height: auto;
+	top:115px;
+	left: 50px;
+}
+
+input[type="checkbox"] {
+    display:none;
+}
+
+input[type="checkbox"] + label span {
+    display:inline-block;
+    width:19px;
+    height:19px;
+    margin:-1px 4px 0 0;
+    vertical-align:middle;
+    background:url(../img/check_radio_sheet.png) left top no-repeat;
+    cursor:pointer;
+}
+
+input[type="checkbox"]:checked + label span {
+    background:url(../img/check_radio_sheet.png) -19px top no-repeat;
+}
