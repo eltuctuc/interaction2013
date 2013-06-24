@@ -140,7 +140,7 @@ body {
 
 /* SLIDE TOGGLE BUTTON */
 .slideThree {
-	width: 130px;
+	width: 160px;
 	margin: 20px 0;
 }
 .slideThree:before {
@@ -152,7 +152,8 @@ body {
   content: "AUS";
 }
 .slideThree label {
-	width: 80px;
+	width: 110px;
+	width: 110px;
 	color: #3c3e40;
 	padding: 0 3px;
 	text-align: center;
