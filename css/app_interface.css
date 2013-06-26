@@ -70,15 +70,7 @@ body {
 }
 
 .interface_wrapper {
-	position: relative;
 	background: black;
-	text-align: left;
-}
-.interface_wrapper .interface {
-	margin: auto;
-}
-.interface_wrapper h2 {
-	font-size: 1em;
 }
 .interface_wrapper .button {
 	display: block;
@@ -91,6 +83,21 @@ body {
 	vertical-align: middle;
 	border-radius: 3px;
 	text-decoration: none;
+}
+#interface {
+	position: relative;
+	left: 50%;
+	width: 60%;
+	padding-top: 20px; 
+	margin-left: -30%; 
+}
+#interface .column {
+	display: inline-block;
+	vertical-align: top;
+	width: 50%;
+}
+#interface .range {
+	margin-top: 20px;
 }
 .interface_wrapper .dropdown {
 	position: relative;
@@ -121,10 +128,6 @@ body {
 	padding: 20px 10px 10px;
 }
 
-.slider_strength {
-	_width: 600px;
-}
-
 /* RANGE SLIDER */
 .slider-handle {
   background: rgb(101, 227, 242);
@@ -140,8 +143,9 @@ body {
 
 /* SLIDE TOGGLE BUTTON */
 .slideThree {
+	display: inline-block;
 	width: 160px;
-	margin: 20px 0;
+	margin: 20px 1em 0 0;
 }
 .slideThree:before {
   color: rgb(101, 227, 242);

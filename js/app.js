@@ -19,7 +19,8 @@ var App = {
 		if (!Glsl.supported()) alert('WebGL is not supported.');
 
 		this.Page.init();
-		this.Glaucoma.init(25,22);
+
+		this.addEvents();
 	},
 
 	addEvents : function () {
@@ -44,10 +45,6 @@ var App = {
 			App.Page.showPage('page_1');
 		});
 
-		$('#slideThree1').bind('click', function() {
-			
-		});
-
 
 	    $('#upload').bind('change',function(evt) {
 	        var files = evt.target.files;
@@ -56,8 +53,6 @@ var App = {
 	        var json = App.Data.load(file);
 
             grid = App.Glaucoma.setGrid(json.diseases.glaucoma);
-
-            App.Glaucoma.drawCanvas(output, grid);
 
 			App.Page.showPage('page_3');
 	    });
@@ -73,3 +68,10 @@ var App = {
 		console.log("error happened");
 	}
 };
+
+function createUUID() {
+	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+	    var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+	    return v.toString(16);
+	});
+}

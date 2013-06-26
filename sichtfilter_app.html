@@ -71,7 +71,8 @@
 
 			<div id="page_3" class="page">
 				<div class="interface_wrapper">
-					<div class="container">
+					<div id="interface"></div>
+					<!--<div class="container">
 						<div class="row">
 							<div class="span4">
 							
@@ -116,7 +117,7 @@
 							</div>
 						</div>
 						
-					</div>
+					</div>-->
 					
 					<div class="dropdown"><a href="#">Einstellungen</a></div>
 				</div>
@@ -138,25 +139,16 @@
         <script src="js/plugins.js"></script>
         <script src="js/app.js"></script>
         <script src="js/app.page.js"></script>
+        <script src="js/app.page.interface.js"></script>
         <script src="js/app.data.js"></script>
         <script src="js/app.glaucoma.js"></script>
         <script src="js/app.video.js"></script>
-        <script src="js/app_sichtfilter.js"></script>
+        <!--<script src="js/app_sichtfilter.js"></script>-->
         <script type="text/javascript">
 		
 		$(document).ready(function($) {
 
-			$('.slider').slider({
-				width: 600,
-			});
-
 			App.init();
-
-
-			$('.interface_wrapper .container').hide();
-			$('.interface_wrapper .dropdown a').bind('click',function(){
-				$('.interface_wrapper .container').slideToggle();
-			});
 		});
 
         </script>

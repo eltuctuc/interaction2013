@@ -5,6 +5,8 @@ App.Page = {
 			App.Page.pages.push($(this));
 		});
 
+		this.Interface.init();
+
 		this.showPage('page_3');
 	},
 
