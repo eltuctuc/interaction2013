@@ -1,3 +1,5 @@
 App.Video = {
-
+	init : function() {
+		
+	}
 };
