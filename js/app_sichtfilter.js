@@ -11,7 +11,7 @@ App.Page = {
 			App.Page.pages.push($(this));
 		});
 
-		this.showPage('page_1');
+		this.showPage('page_3');
 	},
 
 	showPage : function (name) {
