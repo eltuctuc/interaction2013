@@ -1,3 +1,181 @@
 <html>
 <head>
+		<script type="text/javascript" src="js/frameGrabber.js"></script>
+		<script type="text/javascript" src="js/jsmanipulate.min.js"></script>
+		<script type="text/javascript" src="js/video-effects-demo.js"></script>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Sichtfilter App 0.1.0</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/font-awesome.min.css">
+
+		<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+		<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+
+		<link rel="stylesheet" href="css/range-slider.css">
+		<link rel="stylesheet" href="css/checkbox-style.css">
+
+		<link rel="stylesheet" href="css/app_interface.css" type="text/css">
+
+        <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+<style>
+body {
+overflow: hidden;
+}
+
+.box {
+    width:864px;
+    height:480px;
+    padding: 2px;
+	display: none;
+}
+
+.box2 {
+	position: absolute top;
+	height:100%;
+	z-index:-100;
+}
+</style>
 </head>
+<body>
+
+				<div class="interface_wrapper">
+					<div class="container">
+						<div class="row">
+							<div class="span4">
+							
+								<h2>
+									<a href="#" class="button back"><i class="icon-home"></i> Zurück zum Start</a>
+								</h2>
+								<div class="range">
+									<label>Regeln Sie hier die Intensität Ihrer Beeinträchtigung.</label><br />
+									<input type="range" class="slider slider_strength" data-slider-max="100" data-slider-step="10" data-slider-value="50" onChange="updateWert(this.data-slider-value);" />
+								</div>
+
+							</div>
+							<div class="span8">
+								
+								<h2>Wählen Sie die Beeinträchtigung/en für Ihre Simulation aus:</h2>
+								<div class="row">
+
+									<div class="span4">
+										<div class="slideThree">	
+											<input type="checkbox" value="None" id="slideThree1" name="check" />
+											<label for="slideThree1">Glaukom</label>
+										</div>
+
+										<div class="slideThree">	
+											<input type="checkbox" value="none" id="slideThree2" name="check" />
+											<label for="slideThree2">Katarakt</label>
+										</div>
+									</div>
+
+									<div class="span4">
+										<div class="slideThree">	
+											<input type="checkbox" value="None" id="slideThree3" name="check" />
+											<label for="slideThree3">Dyschromatopsie</label>
+										</div>
+
+										<div class="slideThree">	
+											<input type="checkbox" value="None" id="slideThree4" name="check" />
+											<label for="slideThree4">Protanopie</label>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+					
+					<div class="dropdown"><a href="#">Einstellungen</a></div>
+				</div>
+
+<video class="box" id="video" controls autoplay muted>
+      <source src="video/big_buck_bunny_480p.ogg">
+    </video>
+
+
+<canvas class="box2" id="canvas"></canvas>
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+		<script src="js/vendor/glsl.min.js"></script>
+        <script src="js/vendor/bootstrap.min.js"></script>
+        <script src="js/vendor/bootstrap-slider.js"></script>
+        <script src="js/plugins.js"></script>
+		
+        <script type="text/javascript">
+		var currentEffect;
+		$(document).ready(function($) {
+		
+
+			$('.slider').slider({
+				//width: 600,
+			});
+			//App.init();
+			
+
+			$('.interface_wrapper .container').hide();
+			$('.interface_wrapper .dropdown a').bind('click',function(){
+				$('.interface_wrapper .container').slideToggle();
+			});		
+			
+			
+		$("#slideThree1").bind('change',function(){
+			fg.effect="";
+			if($("#slideThree1").is(":checked")){
+			fg.setEffect("pinch");
+			currentEffect = "pinch";
+			$('#slideThree2').attr("checked", false);
+			$('#slideThree3').attr("checked", false);
+			$('#slideThree4').attr("checked", false);
+			}
+		});
+		
+		$("#slideThree2").bind('change',function(){
+			fg.effect="";
+			if($("#slideThree2").is(":checked")){
+			fg.setEffect("blur");
+			currentEffect = "blur";
+			$('#slideThree1').attr("checked", false);
+			$('#slideThree3').attr("checked", false);
+			$('#slideThree4').attr("checked", false);
+			}
+		});
+		
+		$("#slideThree3").bind('change',function(){
+			fg.effect="";
+			if($("#slideThree3").is(":checked")){
+			fg.setEffect("grayscale");
+			currentEffect = "grayscale";
+			$('#slideThree1').attr("checked", false);
+			$('#slideThree2').attr("checked", false);
+			$('#slideThree4').attr("checked", false);
+			}
+		});
+		
+		$("#slideThree4").bind('change',function(){
+			fg.effect="";
+			if($("#slideThree4").is(":checked")){
+			fg.setEffect("rgbadjust");
+			currentEffect = "rgbadjust";
+			$('#slideThree1').attr("checked", false);
+			$('#slideThree2').attr("checked", false);
+			$('#slideThree3').attr("checked", false);
+			}
+		});
+		
+		});
+
+		function updateWert() {
+			var wert = parseInt(($(".slider")).value);
+			console.log(wert);
+		};
+		
+		
+        </script>
+
+</body>
+</html>
