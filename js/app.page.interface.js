@@ -23,7 +23,7 @@ App.Page.Interface = {
 		this.createColumn1();
 		this.createColumn2();
 
-		//$('#interface').hide();
+		$('#interface').hide();
 
 		$('.interface_wrapper .dropdown a').bind('click', function () {
 			$('#interface').slideToggle();
@@ -77,9 +77,18 @@ App.Page.Interface = {
 			class : 'slider'
 		})
 		.data('sliderMax', 100)
-		.data('sliderStep', 10)
-		.bind('change', function () {
+		.data('sliderStep', 1)
+		.on('slide', function () {
+			var value = $(this).slider('getValue')[0].value;
+			var effect = App.Fg.fg.effect;
 
+			amount = value * effect.valueRanges.amount.max / 100;
+
+			effect.defaultValues.amount = amount;
+			
+			/*if(App.Fg.hasEffect && value != '') {
+				App.Fg.setValue(effect.defaultValues);
+			}*/
 		});
 
 		return jQuery('<div/>', {

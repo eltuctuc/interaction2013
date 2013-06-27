@@ -6,8 +6,6 @@ App.Page = {
 		});
 
 		this.Interface.init();
-
-		this.showPage('page_3');
 	},
 
 	showPage : function (name) {

@@ -3,6 +3,7 @@ body {
 	color: white;
 	margin: 0;
 	padding: 0;
+	overflow: auto;
 }
 
 #page_1, #page_2, #page_3 {
@@ -20,6 +21,15 @@ body {
 #page_2 {
 }
 #page_3 {
+}
+
+#video, #webcam {
+	display: none;
+}
+#output {
+	display: block;
+	margin: auto;
+	height: 100%;
 }
 
 .choose {
@@ -70,6 +80,11 @@ body {
 }
 
 .interface_wrapper {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	z-index: 999;
 	background: black;
 }
 .interface_wrapper .button {
