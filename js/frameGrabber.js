@@ -17,8 +17,8 @@ function frameGrabber(video,canvas) {
     var self = this;
     this.video.addEventListener("play", function() {
         self.timerCallback();
-      }, false);
-      
+    }, false);
+
     this.setEffect = function(effect){
       if(effect in JSManipulate){
           this.effect = JSManipulate[effect];
@@ -44,10 +44,10 @@ function frameGrabber(video,canvas) {
     this.computeFrame = function() {
         var data = this.acquireFrame();
         if(this.effect != ""){
-		this.effect.filter(data,this.effect.defaultValues);
-		}
+        this.effect.filter(data,this.effect.defaultValues);
+        }
         this.viewport.putImageData(data, 0, 0);
-    return;
+        return;
     };
     
     this.timerCallback();

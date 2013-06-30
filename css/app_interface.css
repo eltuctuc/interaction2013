@@ -109,7 +109,7 @@ body {
 #interface .column {
 	display: inline-block;
 	vertical-align: top;
-	width: 50%;
+	width: 49%;
 }
 #interface .range {
 	margin-top: 20px;

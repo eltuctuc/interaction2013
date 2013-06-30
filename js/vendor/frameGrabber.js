@@ -25,6 +25,10 @@ function FrameGrabber(video,canvas) {
       }
     }
 
+    this.getEffect = function(){
+        return this.effect;
+    }
+
     this.timerCallback = function() {
         if (this.video.paused || this.video.ended) {
           return;
