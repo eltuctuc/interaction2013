@@ -8,6 +8,7 @@ $(document).ready(function($) {
 	video = document.getElementById('video');
 	webcam = document.getElementById('webcam');
 
+	$('#interface').slideToggle();
 
 	fg = new FrameGrabber(video, output);
 
@@ -25,6 +26,7 @@ $(document).ready(function($) {
     		video.play();
     	}
     })
+    video.play();
 
 	$('.slider')
 		.slider()
