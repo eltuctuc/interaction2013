@@ -48,10 +48,10 @@ function FrameGrabber(video,canvas) {
     this.computeFrame = function() {
         var data = this.acquireFrame();
         if(this.effect != ""){
-		this.effect.filter(data,this.effect.defaultValues);
+		  this.effect.filter(data,this.effect.defaultValues);
 		}
         this.viewport.putImageData(data, 0, 0);
-    return;
+        return;
     };
     
     this.timerCallback();

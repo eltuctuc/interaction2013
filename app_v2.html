@@ -18,6 +18,7 @@
 
 		<link rel="stylesheet" href="css/range-slider.css">
 		<link rel="stylesheet" href="css/radio-style.css">
+		<link rel="stylesheet" href="css/checkbox-style.css">
 
 		<link rel="stylesheet" href="css/app_interface.css" type="text/css">
 
@@ -41,13 +42,13 @@
 					</div>
 					<div class="box left">
 						<h2>Patientendaten</h2>
-						<a href="#" class="cam" id="btn_data_cam">mit Webcam</a>
-						<a href="#" class="video" id="btn_data_video">mit Video</a>
+						<a href="#" class="cam" id="dataWebcamButton">mit Webcam</a>
+						<a href="#" class="video" id="dataVideoButton">mit Video</a>
 					</div>
 					<div class="box right">
 						<h2>Beispieldaten</h2>
-						<a href="#" class="cam" id="btn_nodata_cam">mit Webcam</a>
-						<a href="#" class="video" id="btn_nodata_video">mit Video</a>
+						<a href="#" class="cam" id="nodataWebcamButton">mit Webcam</a>
+						<a href="#" class="video" id="nodataVideoButton">mit Video</a>
 					</div>
 						
 				</div>
@@ -58,13 +59,13 @@
 				<div class="choose">
 					<div class="description">
 						<h1>Patientendaten laden</h1>
-						<p><input type="file" accept="*.data"></p>
+						<p><input id="upload" type="file"></p>
 					</div>
 					<div class="box left">
-						<a href="#" class="button back">zurück</a>
+						<a href="#" class="btn btn-dark back">zurück</a>
 					</div>
 					<div class="box right">
-						<a href="#" class="button next">weiter</a>
+						<a href="#" class="btn btn-dark next">weiter</a>
 					</div>
 				</div>
 			</div>
@@ -73,7 +74,10 @@
 				<div class="interface_wrapper">
 					<div id="interface">
 						<div class="column">
-							<button id="backBtn" class="btn btn-dark"><i class="icon-home"></i> Zurück zum Start</button>
+							<button class="btn btn-dark back"><i class="icon-home"></i> Zurück zum Start</button>
+							<div class="slideThree">
+								<input type="checkbox" value="None" id="slideThree" name="check" checked /><label for="slideThree">Krankheit</label>
+							</div>
 
 							<div class="range">
 								<p>Regeln Sie hier die Intensität Ihrer Beeinträchtigung.</p>
@@ -110,7 +114,6 @@
 					<video id="video" muted>
 						<source src="video/big_buck_bunny_480p.ogg">
 					</video>
-					<video id="webcam"></video>
 					<canvas id="output" width="800" height="600"></canvas>
 				</div>
 			</div>
@@ -125,6 +128,7 @@
         <script src="js/vendor/bootstrap.min.js"></script>
         <script src="js/vendor/bootstrap-slider.js"></script>
         <script src="js/plugins.js"></script>
+        <script src="example.data"></script>
         <script src="js/app_v2.js"></script>
     </body>
 </html>
