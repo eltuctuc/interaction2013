@@ -41,12 +41,14 @@ function FrameGrabber(video,canvas) {
     };
 
     this.acquireFrame = function() {
+        if(!this.video.videoWidth) return null;
         this.ctx.drawImage(this.video, 0, 0, this.video.videoWidth,this.video.videoHeight,0,0,this.width, this.height);
         return this.ctx.getImageData(0, 0, this.width, this.height);
     };
 
     this.computeFrame = function() {
         var data = this.acquireFrame();
+        if(!data) return;
         if(this.effect != ""){
 		  this.effect.filter(data,this.effect.defaultValues);
 		}

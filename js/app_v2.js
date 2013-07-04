@@ -4,18 +4,22 @@ var source;
 var sourceFlag;
 var currentEffect, currentValue;
 var fg;
+var localMediaStream;
 
 $(document).ready(function($) {
 	console.log('ready');
 
 	output = document.getElementById('output');
+	//video = document.createElement('VIDEO');
+	//$(video).attr('id', 'video');
+	//$(video).prop('muted', true);
 	video = document.getElementById('video');
 
 	/*setInterval(function() {
 		location.reload();
 	}, 1000*60*5);*/
 
-	//fg = new FrameGrabber(video, output);
+	fg = new FrameGrabber(video, output);
 
 	$('#page_2').hide();
 	$('#page_3').hide();
@@ -130,37 +134,40 @@ $(document).ready(function($) {
 		});
 
 	$('#dataWebcamButton').bind('click', function(event) {
-		if (!WebGlSupport()) {
-			alert('No Support');
-			return false;
-		};
+		sourceFlag = 'webcam';
 		showChoosePage();
 	});
 	$('#dataVideoButton').bind('click', function(event) {
+		sourceFlag = 'video';
 		showChoosePage();
 	});
 
 
 	$('#nodataWebcamButton').bind('click', function(event) {
-		if (!WebGlSupport()) {
-			alert('No Support');
-			return false;
-		};
+		sourceFlag = 'webcam';
 		showMainPage();
 	});
 	$('#nodataVideoButton').bind('click', function(event) {
+		sourceFlag = 'video';
 		showMainPage();
 	});
 
+
 	$('.btn.back').bind('click', function(event) {
+		if(sourceFlag == 'webcam') {
+			localMediaStream.stop();
+		}
 		video.pause();
-		video.src='video/big_buck_bunny_480p.ogg';
+
+		drawBlack();
+
 		showStartPage();
 	});
 
 	$('.btn.next').bind('click', function(event) {
 		showMainPage();
 	});
+
 
 	$('#upload').bind('change',function(event) {
 	    var reader = new FileReader();
@@ -184,8 +191,6 @@ $(document).ready(function($) {
 });
 
 function showStartPage() {
-	video.pause();
-	video.src='video/big_buck_bunny_480p.ogg';
 	data = exampleData;
 
 	$('#page_1').show();
@@ -194,8 +199,6 @@ function showStartPage() {
 }
 
 function showChoosePage() {
-	video.pause();
-	video.src = 'video/big_buck_bunny_480p.ogg';
 	data = null;
 	$('.btn.next').attr('disabled',true);
 
@@ -217,53 +220,53 @@ function showMainPage() {
 
 	$('#interface').slideToggle();
 
-	video = createVideoTag();
-	video.play();
+	if(sourceFlag == 'video') {
+		$(video).html('');
 
-	fg = null;
-	fg = new FrameGrabber(video, output);
+		video.src = 'video/big_buck_bunny_480p.ogg';
+		video.play();
+
+		fg.video = video;
+	}
+
+	if(sourceFlag == 'webcam') {
+			window.URL = window.URL || window.webkitURL;
+			navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+			navigator.getUserMedia(
+				{audio: false, video:true},
+				function (stream) {
+					localMediaStream = stream;
+					//video = document.querySelector('video');
+					video.src = window.URL.createObjectURL(stream);
+					video.onloadedmetadata = function(e) {
+						e.target.play();
+
+						fg.video = video;
+					};
+				},
+				function (err) {
+					console.log("The following error occured: " + err);
+				});
+
+			if (!Glsl.supported()) {
+				alert('WebGL is not supported.');
+				return false;
+			}
+	}
 
 	if(currentEffect) {
 		fg.setEffect(currentEffect);
 	}
 }
 
-function createVideoTag () {
-	var source = document.createElement('SOURCE');
-	source.src = 'video/big_buck_bunny_480p.ogg';
-
-	var video = document.createElement('VIDEO');
-	$(video).attr('id', 'video');
-	$(video).prop('muted', true);
-	video.appendChild(source);
-
-	return video;
-}
-
 function getRangeValue () {
 	return $('.slider [type=range]').val();
 }
 
-function WebGlSupport() {
-	window.URL = window.URL || window.webkitURL;
-	navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-	navigator.getUserMedia({video:true,audio:false}, gotStream, gotError);
+function drawBlack () {
+	var ctx = output.getContext("2d");
 
-	if (!Glsl.supported()) {
-		alert('WebGL is not supported.');
-		return false;
-	}
-	return true;
-}
-
-function gotStream(stream) {
-	localMediaStream = stream;
-	video.src = window.URL.createObjectURL(stream);
-	video.play();
-}
-
-function gotError() {
-	console.log("error happened");
+	ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
 }
 
 function map (value, start1, stop1, start2, stop2) {
