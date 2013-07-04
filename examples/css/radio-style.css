@@ -1,4 +1,4 @@
-input[type=checkbox] {
+input[type=radio] {
 	visibility: hidden;
 }
 
@@ -51,7 +51,7 @@ input[type=checkbox] {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfff4', endColorstr='#b3bead',GradientType=0 );
 }
 
-.slideOne input[type=checkbox]:checked + label {
+.slideOne input[type=radio]:checked + label {
 	left: 37px;
 }
 
@@ -141,11 +141,11 @@ input[type=checkbox] {
 	box-shadow: inset 0px 1px 1px rgba(0,0,0,1), 0px 1px 0px rgba(255,255,255,0.9);
 }
 
-.slideTwo input[type=checkbox]:checked + label {
+.slideTwo input[type=radio]:checked + label {
 	left: 54px;
 }
 
-.slideTwo input[type=checkbox]:checked + label:after {
+.slideTwo input[type=radio]:checked + label:after {
 	background: #00bf00;
 }
 
@@ -220,7 +220,7 @@ input[type=checkbox] {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfff4', endColorstr='#b3bead',GradientType=0 );
 }
 
-.slideThree input[type=checkbox]:checked + label {
+.slideThree input[type=radio]:checked + label {
 	left: 43px;
 }
 
@@ -305,7 +305,7 @@ input[type=checkbox] {
 	opacity: 0.3;
 }
 
-.roundedOne input[type=checkbox]:checked + label:after {
+.roundedOne input[type=radio]:checked + label:after {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 	filter: alpha(opacity=100);
 	opacity: 1;
@@ -387,7 +387,7 @@ input[type=checkbox] {
 	opacity: 0.3;
 }
 
-.roundedTwo input[type=checkbox]:checked + label:after {
+.roundedTwo input[type=radio]:checked + label:after {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 	filter: alpha(opacity=100);
 	opacity: 1;
@@ -462,7 +462,7 @@ input[type=checkbox] {
 	opacity: 0.3;
 }
 
-.squaredOne input[type=checkbox]:checked + label:after {
+.squaredOne input[type=radio]:checked + label:after {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 	filter: alpha(opacity=100);
 	opacity: 1;
@@ -536,7 +536,7 @@ input[type=checkbox] {
 	opacity: 0.3;
 }
 
-.squaredTwo input[type=checkbox]:checked + label:after {
+.squaredTwo input[type=radio]:checked + label:after {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 	filter: alpha(opacity=100);
 	opacity: 1;
@@ -598,7 +598,7 @@ input[type=checkbox] {
 	opacity: 0.3;
 }
 
-.squaredThree input[type=checkbox]:checked + label:after {
+.squaredThree input[type=radio]:checked + label:after {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 	filter: alpha(opacity=100);
 	opacity: 1;
@@ -660,7 +660,7 @@ input[type=checkbox] {
 	opacity: 0.5;
 }
 
-.squaredFour input[type=checkbox]:checked + label:after {
+.squaredFour input[type=radio]:checked + label:after {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 	filter: alpha(opacity=100);
 	opacity: 1;

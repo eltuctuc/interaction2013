@@ -3,6 +3,7 @@ body {
 	color: white;
 	margin: 0;
 	padding: 0;
+	overflow: auto;
 }
 
 #page_1, #page_2, #page_3 {
@@ -18,8 +19,18 @@ body {
 	background: black  url(../img/start_bg.jpg) center center no-repeat;
 }
 #page_2 {
+background: black  url(../img/data_bg.jpg) center center no-repeat;
 }
 #page_3 {
+}
+
+#video, #webcam {
+	display: none;
+}
+#output {
+	display: block;
+	margin: auto;
+	height: 100%;
 }
 
 .choose {
@@ -70,15 +81,12 @@ body {
 }
 
 .interface_wrapper {
-	position: relative;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	z-index: 999;
 	background: black;
-	text-align: left;
-}
-.interface_wrapper .interface {
-	margin: auto;
-}
-.interface_wrapper h2 {
-	font-size: 1em;
 }
 .interface_wrapper .button {
 	display: block;
@@ -91,6 +99,21 @@ body {
 	vertical-align: middle;
 	border-radius: 3px;
 	text-decoration: none;
+}
+#interface {
+	position: relative;
+	left: 50%;
+	width: 60%;
+	padding-top: 20px; 
+	margin-left: -30%; 
+}
+#interface .column {
+	display: inline-block;
+	vertical-align: top;
+	width: 49%;
+}
+#interface .range {
+	margin-top: 20px;
 }
 .interface_wrapper .dropdown {
 	position: relative;
@@ -121,10 +144,6 @@ body {
 	padding: 20px 10px 10px;
 }
 
-.slider_strength {
-	_width: 600px;
-}
-
 /* RANGE SLIDER */
 .slider-handle {
   background: rgb(101, 227, 242);
@@ -140,8 +159,9 @@ body {
 
 /* SLIDE TOGGLE BUTTON */
 .slideThree {
-	width: 130px;
-	margin: 20px 0;
+	display: inline-block;
+	width: 160px;
+	margin: 20px 1em 0 0;
 }
 .slideThree:before {
   color: rgb(101, 227, 242);
@@ -152,7 +172,8 @@ body {
   content: "AUS";
 }
 .slideThree label {
-	width: 80px;
+	width: 110px;
+	width: 110px;
 	color: #3c3e40;
 	padding: 0 3px;
 	text-align: center;

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Sichtfilter App 0.1.0</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/font-awesome.min.css">
+
+		<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+		<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+
+		<link rel="stylesheet" href="css/range-slider.css">
+		<link rel="stylesheet" href="css/radio-style.css">
+		<link rel="stylesheet" href="css/checkbox-style.css">
+
+		<link rel="stylesheet" href="css/app_interface.css" type="text/css">
+
+        <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+        <div class="container">
+
+			<!-- Begin Page 1 -->
+			<div id="page_1" class="page">
+				<div class="choose">
+					<div class="description">
+						<h1>Herzlich Willkommen!</h1>
+						<p>Um die Simulation zu starten müssen Sie sich voerst entscheiden ob Sie Ihre realen Patientendaten verwenden möchten, oder nicht. Dann entscheiden Sie sich bitte noch ob Sie das Realbild Ihrer Webcam für die Simulation verwenden möchten, oder ein von uns vorgefertigtes Video. Nutzen Sie nun den Ihren Wünschen entsprechenden unten stehenden Link.</p>
+						
+						<p>Sollten Sie sich für die Patientendaten enscheiden die sie von Ihrem Augenarzt erhalten haben, laden Sie im Anschluss bitte die mitgegebene Datei hoch.</p>
+					</div>
+					<div class="box left">
+						<h2>Patientendaten</h2>
+						<a href="#" class="cam" id="dataWebcamButton">mit Webcam</a>
+						<a href="#" class="video" id="dataVideoButton">mit Video</a>
+					</div>
+					<div class="box right">
+						<h2>Beispieldaten</h2>
+						<a href="#" class="cam" id="nodataWebcamButton">mit Webcam</a>
+						<a href="#" class="video" id="nodataVideoButton">mit Video</a>
+					</div>
+						
+				</div>
+			</div>
+			<!-- Ende Page 1 -->
+
+			<div id="page_2" class="page">
+				<div class="choose">
+					<div class="description">
+						<h1>Patientendaten laden</h1>
+						<p><input id="upload" type="file"></p>
+					</div>
+					<div class="box left">
+						<a href="#" class="btn btn-dark back">zurück</a>
+					</div>
+					<div class="box right">
+						<a href="#" class="btn btn-dark next">weiter</a>
+					</div>
+				</div>
+			</div>
+
+			<div id="page_3" class="page">
+				<div class="interface_wrapper">
+					<div id="interface">
+						<div class="column">
+							<button class="btn btn-dark back"><i class="icon-home"></i> Zurück zum Start</button>
+							<div class="slideThree">
+								<input type="checkbox" value="None" id="slideThree" name="check" checked /><label for="slideThree">Krankheit</label>
+							</div>
+
+							<div class="range">
+								<p>Regeln Sie hier die Intensität Ihrer Beeinträchtigung.</p>
+								<input type="range" class="slider" data-slider-max="100" data-slider-step="1">
+							</div>
+							<!--<div>
+								<button id="videoButton" type="button">PLAY/PAUSE</button>
+							</div>-->
+						</div>
+						<div class="column">
+							<div class="filter_group">
+								<p>Wählen Sie die Beeinträchtigung/en für Ihre Simulation aus:</p>
+								<div class="filters">
+									<div class="slideThree">
+										<input name="radio" type="radio" id="glaucomaButton"><label for="glaucomaButton">Glaukom</label>
+									</div>
+									<div class="slideThree">
+										<input name="radio" type="radio" id="kataraktButton"><label for="kataraktButton">Katarakt</label>
+									</div>
+									<div class="slideThree">
+										<input name="radio" type="radio" id="protanopieButton"><label for="protanopieButton">Protanopie</label>
+									</div>
+									<div class="slideThree">
+										<input name="radio" type="radio" id="dyschromatopsieButton"><label for="dyschromatopsieButton">Dyschromatopsie</label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="dropdown"><a href="#">Einstellungen</a></div>
+				</div>
+
+				<div class="content">
+					<video id="video" muted>
+						<source src="video/big_buck_bunny_480p.ogg">
+					</video>
+					<canvas id="output" width="800" height="600"></canvas>
+				</div>
+			</div>
+
+        </div>
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+		<script src="js/vendor/glsl.min.js"></script>
+        <script src="js/vendor/jsmanipulate.min.js"></script>
+        <script src="js/vendor/framegrabber.js"></script>
+        <script src="js/vendor/bootstrap.min.js"></script>
+        <script src="js/vendor/bootstrap-slider.js"></script>
+        <script src="js/plugins.js"></script>
+        <script src="example.data"></script>
+        <script src="js/app_v2.js"></script>
+    </body>
+</html>
