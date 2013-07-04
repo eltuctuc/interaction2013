@@ -7,7 +7,6 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title>Sichtfilter App 0.1.0</title>
-        <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
 
         <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -33,6 +32,7 @@
 
 			<!-- Begin Page 1 -->
 			<div id="page_1" class="page">
+				<div style="position:absolute;top:30px;left:50%;margin-left:-100px;z-index:999;"><img src="http://placehold.it/200x200"/></div>
 				<div class="choose">
 					<div class="description">
 						<h1>Herzlich Willkommen!</h1>
@@ -42,13 +42,13 @@
 					</div>
 					<div class="box left">
 						<h2>Patientendaten</h2>
-						<a href="#" class="cam" id="dataWebcamButton">mit Webcam</a>
-						<a href="#" class="video" id="dataVideoButton">mit Video</a>
+						<button class="btn cam" id="dataWebcamButton">mit Webcam</button>
+						<button class="btn video" id="dataVideoButton">mit Video</button>
 					</div>
 					<div class="box right">
 						<h2>Beispieldaten</h2>
-						<a href="#" class="cam" id="nodataWebcamButton">mit Webcam</a>
-						<a href="#" class="video" id="nodataVideoButton">mit Video</a>
+						<button class="btn cam" id="nodataWebcamButton">mit Webcam</button>
+						<button class="btn video" id="nodataVideoButton">mit Video</button>
 					</div>
 						
 				</div>
@@ -62,10 +62,10 @@
 						<p><input id="upload" type="file"></p>
 					</div>
 					<div class="box left">
-						<a href="#" class="btn btn-dark back">zurück</a>
+						<button class="btn btn-dark back">zurück</button>
 					</div>
 					<div class="box right">
-						<a href="#" class="btn btn-dark next">weiter</a>
+						<button class="btn btn-dark next">weiter</button>
 					</div>
 				</div>
 			</div>

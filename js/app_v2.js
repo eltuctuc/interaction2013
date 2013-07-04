@@ -1,12 +1,18 @@
 var output, input, video, webcam;
 var outputResolution, videoResolution;
 var source;
+var sourceFlag;
 var fg;
 
 $(document).ready(function($) {
+	console.log('ready');
 
 	output = document.getElementById('output');
 	video = document.getElementById('video');
+
+	setInterval(function() {
+		location.reload();
+	}, 1000*60*5);
 
 	fg = new FrameGrabber(video, output);
 
@@ -203,6 +209,18 @@ function showMainPage() {
 		video.pause();
 		video.play();
 	}, 5000);
+}
+
+function createVideoTag () {
+	var source = document.createElement('SOURCE');
+	source.src = 'video/big_buck_bunny_480p.ogg';
+
+	var video = document.createElement('VIDEO');
+	video.setAttribute('id', 'video');
+	video.setAttribute('muted', 'muted');
+	video.appendChild(source);
+
+	return video;
 }
 
 function getRangeValue () {
