@@ -81,6 +81,8 @@ $(document).ready(function($) {
 	$('#glaucomaButton')
 		.bind('change', function (event) {
 			var value = getRangeValue();
+			
+			fg.setEffect('blur');
 		});
 	$('#kataraktButton')
 		.bind('change', function (event) {
