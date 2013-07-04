@@ -82,7 +82,7 @@ $(document).ready(function($) {
 		.bind('change', function (event) {
 			var value = getRangeValue();
 			
-			fg.setEffect('blur');
+			fg.setEffect('pinch');
 		});
 	$('#kataraktButton')
 		.bind('change', function (event) {
