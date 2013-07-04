@@ -145,13 +145,14 @@ background: black  url(../img/data_bg.jpg) center center no-repeat;
 	bottom: -40px;
 	left: 80px;
 }
-.interface_wrapper .dropdown a {
-	display: block;
+.interface_wrapper .dropdown button {
+	width: 200px;
 	text-transform: uppercase;
-	text-align: center;
 	text-decoration: none;
+	background: black;
 	color: white;
-	padding: 20px 10px 10px;
+	border: none;
+	padding: 10px 10px 10px;
 }
 
 /* RANGE SLIDER */

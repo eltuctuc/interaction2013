@@ -2,6 +2,7 @@ var output, input, video, webcam;
 var outputResolution, videoResolution;
 var source;
 var sourceFlag;
+var currentEffect, currentValue;
 var fg;
 
 $(document).ready(function($) {
@@ -10,18 +11,16 @@ $(document).ready(function($) {
 	output = document.getElementById('output');
 	video = document.getElementById('video');
 
-	setInterval(function() {
+	/*setInterval(function() {
 		location.reload();
-	}, 1000*60*5);
+	}, 1000*60*5);*/
 
-	fg = new FrameGrabber(video, output);
+	//fg = new FrameGrabber(video, output);
 
 	$('#page_2').hide();
 	$('#page_3').hide();
 
-	$('.btn.next').addClass('disabled');
-
-    $('#videoButton').bind('click', function (event) {
+    /*$('#videoButton').bind('click', function (event) {
     	if(video.paused === false) {
     		video.pause();
     		video.currentTime = 0;
@@ -29,7 +28,7 @@ $(document).ready(function($) {
     	} else {
     		video.play();
     	}
-    })
+    })*/
 
 	$('.slider')
 		.slider()
@@ -48,6 +47,8 @@ $(document).ready(function($) {
 				console.log('keine Value');
 				return false;
 			};
+
+			currentValue = value;
 
 			var _map = map(value, 0,100, 0,20);
 
@@ -87,6 +88,10 @@ $(document).ready(function($) {
 	$('#glaucomaButton')
 		.bind('change', function (event) {
 			var value = getRangeValue();
+
+			fg.setEffect('pinch');
+
+			currentEffect = 'blur';
 		});
 	$('#kataraktButton')
 		.bind('change', function (event) {
@@ -96,6 +101,8 @@ $(document).ready(function($) {
 			fg.effect.defaultValues = {
 				amount : map(value, 0,100, 0,20)
 			};
+
+			currentEffect = 'blur';
 		});
 	$('#protanopieButton')
 		.bind('change', function (event) {
@@ -107,6 +114,8 @@ $(document).ready(function($) {
 				green: 1.0,
 				blue: 1.0
 			};
+
+			currentEffect = 'rgbadjust';
 		});
 	$('#dyschromatopsieButton')
 		.bind('change', function (event) {
@@ -116,6 +125,8 @@ $(document).ready(function($) {
 			fg.effect.defaultValues = {
 				amount : map(value, 0,100, 1,0)
 			};
+
+			currentEffect = 'saturation';
 		});
 
 	$('#dataWebcamButton').bind('click', function(event) {
@@ -163,7 +174,7 @@ $(document).ready(function($) {
 	            var name = escape(f.name);
 
 	            data = JSON.parse(content);
-				$('.btn.next').removeClass('disabled');
+				$('.btn.next').attr('disabled',false);
 	        };
 	    })(file);
 
@@ -186,6 +197,7 @@ function showChoosePage() {
 	video.pause();
 	video.src = 'video/big_buck_bunny_480p.ogg';
 	data = null;
+	$('.btn.next').attr('disabled',true);
 
     // Check for the various File API support.
     if (!(window.File && window.FileReader && window.FileList && window.Blob)) {
@@ -205,10 +217,15 @@ function showMainPage() {
 
 	$('#interface').slideToggle();
 
-	setTimeout(function() {
-		video.pause();
-		video.play();
-	}, 5000);
+	video = createVideoTag();
+	video.play();
+
+	fg = null;
+	fg = new FrameGrabber(video, output);
+
+	if(currentEffect) {
+		fg.setEffect(currentEffect);
+	}
 }
 
 function createVideoTag () {
@@ -216,8 +233,8 @@ function createVideoTag () {
 	source.src = 'video/big_buck_bunny_480p.ogg';
 
 	var video = document.createElement('VIDEO');
-	video.setAttribute('id', 'video');
-	video.setAttribute('muted', 'muted');
+	$(video).attr('id', 'video');
+	$(video).prop('muted', true);
 	video.appendChild(source);
 
 	return video;
