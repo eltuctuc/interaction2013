@@ -2262,6 +2262,48 @@ function WaterRippleFilter(){
 		filterUtils.transformFilter(inputData,transInverse,width,height);
     };
 }
+
+
+/**
+ * RED GREEN FILTER by RE-Design.
+ */
+function RedGreenFilter(){
+	this.name = "RedGreen";
+	this.isDirAnimatable = true;
+	this.defaultValues = {
+		r : 0,
+		g : 0,
+		b : 0,
+	};
+	this.valueRanges = {
+		r : {min: 0, max: 1},
+		g : {min: 0, max: 1},
+		b : {min: 0, max: 1},
+	};
+
+	var filterUtils = new FilterUtils();
+	this.filter = function(input,values){
+		var width = input.width, height = input.height;
+	  	var inputData = input.data;
+	  	//var rwgt = 0.3086;
+	  	//var gwgt = 0.6094;
+	  	//var bwgt = 0.0820;
+	  	var rwgt = values.r*this.valueRanges.r.max;
+	  	var gwgt = values.g*this.valueRanges.g.max;
+	  	var bwgt = values.b*this.valueRanges.b.max;
+
+	  	console.log(bwgt);
+
+	  	var matrix = [
+	  		rwgt, rwgt, rwgt,
+	  		gwgt, gwgt, gwgt,
+	  		bwgt*-1, bwgt*-1, bwgt*-1
+	  	];
+	  	filterUtils.convolveFilter(inputData,matrix,width,height);
+	};			
+}
+
+
 /**
  * A collection of all the filters.
  */
@@ -2307,5 +2349,6 @@ var JSManipulate = {
 	triangleripple : new TriangleRippleFilter(),
 	twirl : new TwirlFilter(),
 	vignette : new VignetteFilter(),
-	waterripple : new WaterRippleFilter() 
+	waterripple : new WaterRippleFilter(),
+	redgreen : new RedGreenFilter() 
 };
