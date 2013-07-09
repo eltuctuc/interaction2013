@@ -22,6 +22,7 @@
 		<link rel="stylesheet" href="css/app_interface.css" type="text/css">
 
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+		<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" /> 
     </head>
     <body>
         <!--[if lt IE 7]>
@@ -32,13 +33,13 @@
 
 			<!-- Begin Page 1 -->
 			<div id="page_1" class="page">
-				<div style="position:absolute;top:30px;left:50%;margin-left:-100px;z-index:999;"><img src="http://placehold.it/200x200"/></div>
+				<div style="position:absolute;top:30px;left:50%;margin-left:-100px;z-index:999;"><img src="img/logo.png"/></div>
 				<div class="choose">
 					<div class="description">
 						<h1>Herzlich Willkommen!</h1>
-						<p>Um die Simulation zu starten müssen Sie sich voerst entscheiden ob Sie Ihre realen Patientendaten verwenden möchten, oder nicht. Dann entscheiden Sie sich bitte noch ob Sie das Realbild Ihrer Webcam für die Simulation verwenden möchten, oder ein von uns vorgefertigtes Video. Nutzen Sie nun den Ihren Wünschen entsprechenden unten stehenden Link.</p>
+						<p>Um den Sichtfilter zu starten müssen Sie sich zuerst entscheiden ob Sie reale Patientendaten verwenden möchten, oder Beispieldaten. Dann können Sie sich noch entscheiden ob Sie sich selbst sehen möchten, wie der Erkrankte Sie sieht (Webcam), oder ob Sie den Blick desS Patienten auf eine Straßen-Szenerie erfahren möchten (Video). Nutzen Sie dafür den Ihren Wünschen entsprechenden unten stehenden Link.</p>
 						
-						<p>Sollten Sie sich für die Patientendaten enscheiden die sie von Ihrem Augenarzt erhalten haben, laden Sie im Anschluss bitte die mitgegebene Datei hoch.</p>
+						<p>Sollten Sie sich für die Patientendaten enscheiden die sie von Ihrem Augenarzt erhalten haben, haben Sie die Möglichkeit diese im Anschluss an Ihre Auswahl hochzuladen.</p>
 					</div>
 					<div class="box left">
 						<h2>Patientendaten</h2>
@@ -76,12 +77,12 @@
 						<div class="column">
 							<button class="btn btn-dark back"><i class="icon-home"></i> Zurück zum Start</button>
 							<div class="slideThree">
-								<input type="checkbox" value="None" id="slideThree" name="check" checked /><label for="slideThree">Krankheit</label>
+								<input type="checkbox" value="None" id="disease" name="check" checked /><label for="disease">Krankheit</label>
 							</div>
 
 							<div class="range">
 								<p>Regeln Sie hier die Intensität Ihrer Beeinträchtigung.</p>
-								<input type="range" class="slider" data-slider-max="100" data-slider-step="1">
+								<input type="range" class="slider" data-slider-max="100" data-slider-step="1" data-slider-tooltip="hide">
 							</div>
 							<!--<div>
 								<button id="videoButton" type="button">PLAY/PAUSE</button>
@@ -91,16 +92,16 @@
 							<div class="filter_group">
 								<p>Wählen Sie die Beeinträchtigung/en für Ihre Simulation aus:</p>
 								<div class="filters">
-									<div class="slideThree">
+									<div class="slideThree" id="glaucoma">
 										<input name="radio" type="radio" id="glaucomaButton"><label for="glaucomaButton">Glaukom</label>
 									</div>
-									<div class="slideThree">
+									<div class="slideThree" id="katarakt">
 										<input name="radio" type="radio" id="kataraktButton"><label for="kataraktButton">Grauer Star</label>
 									</div>
-									<div class="slideThree">
+									<div class="slideThree" id="protanopie">
 										<input name="radio" type="radio" id="protanopieButton"><label for="protanopieButton">Rotblind</label>
 									</div>
-									<div class="slideThree">
+									<div class="slideThree" id="dyschromatopsie">
 										<input name="radio" type="radio" id="dyschromatopsieButton"><label for="dyschromatopsieButton">Rot/Grünblind</label>
 									</div>
 								</div>
@@ -111,8 +112,9 @@
 				</div>
 
 				<div class="content">
-					<video id="video" muted></video>
-					<canvas id="output" width="800" height="600"></canvas>
+					<video id="video" muted loop></video>
+					<canvas id="output"></canvas>
+					<img id="overlay" />
 				</div>
 			</div>
 
@@ -121,7 +123,7 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
 		<script src="js/vendor/glsl.min.js"></script>
-        <script src="js/vendor/jsmanipulate.min.js"></script>
+        <script src="js/vendor/jsmanipulate.js"></script>
         <script src="js/vendor/framegrabber.js"></script>
         <script src="js/vendor/bootstrap.min.js"></script>
         <script src="js/vendor/bootstrap-slider.js"></script>

@@ -1,21 +1,42 @@
 var output, input, video, webcam;
 var outputResolution, videoResolution;
+var videoWidth, videoHeight;
 var source;
+var sourceFlag;
+var diseaseFlag = true;
+var currentEffect = '', currentValue = 0;
+var currentOverlay;
 var fg;
+var localMediaStream;
 
 $(document).ready(function($) {
+	console.log('ready');
 
 	output = document.getElementById('output');
+	//video = document.createElement('VIDEO');
+	//$(video).attr('id', 'video');
+	//$(video).prop('muted', true);
 	video = document.getElementById('video');
+
+	videoWidth = 1920;
+	videoHeight = 1080;
+	videoResolution = videoWidth/videoHeight;
+
+	resizeCanvas();
+	$(window).resize(function() {
+		resizeCanvas();
+	})
+
+	/*setInterval(function() {
+		location.reload();
+	}, 1000*60*5);*/
 
 	fg = new FrameGrabber(video, output);
 
 	$('#page_2').hide();
 	$('#page_3').hide();
 
-	$('.btn.next').addClass('disabled');
-
-    $('#videoButton').bind('click', function (event) {
+    /*$('#videoButton').bind('click', function (event) {
     	if(video.paused === false) {
     		video.pause();
     		video.currentTime = 0;
@@ -23,55 +44,13 @@ $(document).ready(function($) {
     	} else {
     		video.play();
     	}
-    })
+    })*/
+
+	$('#interface').slideToggle();
 
 	$('.slider')
 		.slider()
-		.on('slide', function (event) {
-			var value = getRangeValue();
-			var effect = fg.getEffect();
-			var defaultValues = {};
-
-			//console.log(value, effect);
-
-			if(!effect) {
-				console.log('kein Effect');
-				return false;
-			}
-			if (isNaN(value)) {
-				console.log('keine Value');
-				return false;
-			};
-
-			var _map = map(value, 0,100, 0,20);
-
-			switch (effect) {
-				case JSManipulate['blur']:
-					defaultValues = {
-						amount : map(value, 0,100, 0,20)
-					}; break;
-				case  JSManipulate['pinch']:
-					defaultValues = {
-						amount : map(value, 0,100, 0,1),
-						radius : map(value, 0,100, 0,500),
-						angle : 0,
-						centerX : 0.5,
-						centerY : 0.5
-					}; break;
-				case  JSManipulate['rgbadjust']:
-					defaultValues = {
-						red: map(value, 0,100, 1,0),
-						green: 1.0,
-						blue: 1.0
-					}; break;
-				case JSManipulate['saturation']:
-					defaultValues = {
-						amount : map(value, 0,100, 1,0)
-					}; break;
-			}
-
-			fg.effect.defaultValues = defaultValues;
-		});
+		.on('slide', sliderClick);
 
 	$('.dropdown')
 		.bind('click',function (event) {
@@ -81,8 +60,10 @@ $(document).ready(function($) {
 	$('#glaucomaButton')
 		.bind('change', function (event) {
 			var value = getRangeValue();
-			
+
 			fg.setEffect('pinch');
+
+			currentEffect = 'pinch';
 		});
 	$('#kataraktButton')
 		.bind('change', function (event) {
@@ -92,10 +73,17 @@ $(document).ready(function($) {
 			fg.effect.defaultValues = {
 				amount : map(value, 0,100, 0,20)
 			};
+
+			currentEffect = 'blur';
 		});
 	$('#protanopieButton')
 		.bind('change', function (event) {
 			var value = getRangeValue();
+
+			if(isNaN(value) || value == '' || value == null) {
+				value = map(100, 0,100, 1,0);
+			}
+			console.log(typeof value);
 
 			fg.setEffect('rgbadjust');
 			fg.effect.defaultValues = {
@@ -103,74 +91,141 @@ $(document).ready(function($) {
 				green: 1.0,
 				blue: 1.0
 			};
+
+			currentEffect = 'rgbadjust';
 		});
 	$('#dyschromatopsieButton')
 		.bind('change', function (event) {
 			var value = getRangeValue();
 
-			fg.setEffect('saturation');
+			/*fg.setEffect('sepia');
 			fg.effect.defaultValues = {
-				amount : map(value, 0,100, 1,0)
+				amount : map(value, 0,100, 0,30)
+			};*/
+
+			fg.setEffect('redgreen');
+			fg.effect.defaultValues = {
+				r : map(value, 0,100, 0,1),
+				g : map(value, 0,100, 0,1),
+				b : map(value, 0,100, 0,1),
 			};
+
+			currentEffect = 'redgreen';
 		});
 
-	$('#dataWebcamButton').bind('click', function(event) {
-		if (!WebGlSupport()) {
-			alert('No Support');
-			return false;
-		};
-		showChoosePage();
-	});
-	$('#dataVideoButton').bind('click', function(event) {
-		showChoosePage();
-	});
+	$('#disease')
+		.bind('click', function(event) {
+			if(diseaseFlag) {
+				diseaseFlag = false;
+
+				fg.effect = '';
+
+				$('#glaucoma').addClass('disabled');
+				$('#glaucomaButton').attr('disabled', true);
+				$('#katarakt').addClass('disabled');
+				$('#kataraktButton').attr('disabled', true);
+				$('#protanopie').addClass('disabled');
+				$('#protanopieButton').attr('disabled', true);
+				$('#dyschromatopsie').addClass('disabled');
+				$('#dyschromatopsieButton').attr('disabled', true);
 
 
-	$('#nodataWebcamButton').bind('click', function(event) {
-		if (!WebGlSupport()) {
-			alert('No Support');
-			return false;
-		};
-		showMainPage();
-	});
-	$('#nodataVideoButton').bind('click', function(event) {
-		showMainPage();
-	});
+				$('.slider').addClass('disabled');
 
-	$('.btn.back').bind('click', function(event) {
-		video.pause();
-		video.src='video/big_buck_bunny_480p.ogg';
-		showStartPage();
-	});
+				$('.slider').off('slide', sliderClick);
+			} else {
+				diseaseFlag = true;
 
-	$('.btn.next').bind('click', function(event) {
-		showMainPage();
-	});
+				fg.setEffect(currentEffect);
 
-	$('#upload').bind('change',function(event) {
-	    var reader = new FileReader();
+				$('#glaucoma').removeClass('disabled');
+				$('#glaucomaButton').attr('disabled', false);
+				$('#katarakt').removeClass('disabled');
+				$('#kataraktButton').attr('disabled', false);
+				$('#protanopie').removeClass('disabled');
+				$('#protanopieButton').attr('disabled', false);
+				$('#dyschromatopsie').removeClass('disabled');
+				$('#dyschromatopsieButton').attr('disabled', false);
 
-        var files = event.target.files;
-        var file = files[0];
 
-	    reader.onload = (function(f) {
-	        return function(e) {
-	            var content = e.target.result;
-	            var name = escape(f.name);
+				$('.slider').removeClass('disabled');
 
-	            data = JSON.parse(content);
-				$('.btn.next').removeClass('disabled');
-	        };
-	    })(file);
+				$('.slider').on('slide', sliderClick);
+				sliderClick();
+			}
+		});
 
-	    // Read in the image file as a data URL.
-	    reader.readAsText(file);
-	});
+	$('#dataWebcamButton')
+		.bind('click', function(event) {
+			sourceFlag = 'webcam';
+			currentOverlay = 'patient';
+			showChoosePage();
+		});
+
+	$('#dataVideoButton')
+		.bind('click', function(event) {
+			sourceFlag = 'video';
+			currentOverlay = 'patient';
+			showChoosePage();
+		});
+
+
+	$('#nodataWebcamButton')
+		.bind('click', function(event) {
+			sourceFlag = 'webcam';
+			currentOverlay = 'example';
+			showMainPage();
+		});
+
+	$('#nodataVideoButton')
+		.bind('click', function(event) {
+			sourceFlag = 'video';
+			currentOverlay = 'example';
+			showMainPage();
+		});
+
+
+	$('.btn.back')
+		.bind('click', function(event) {
+			if(sourceFlag == 'webcam') {
+				localMediaStream.stop();
+			}
+			video.pause();
+
+			drawBlack();
+
+			showStartPage();
+		});
+
+	$('.btn.next')
+		.bind('click', function(event) {
+			showMainPage();
+		});
+
+
+	$('#upload')
+		.bind('change',function(event) {
+		    var reader = new FileReader();
+
+	        var files = event.target.files;
+	        var file = files[0];
+
+		    reader.onload = (function(f) {
+		        return function(e) {
+		            var content = e.target.result;
+		            var name = escape(f.name);
+
+		            data = JSON.parse(content);
+					$('.btn.next').attr('disabled',false);
+		        };
+		    })(file);
+
+		    // Read in the image file as a data URL.
+		    reader.readAsText(file);
+		});
 });
 
 function showStartPage() {
-	video.pause();
-	video.src='video/big_buck_bunny_480p.ogg';
 	data = exampleData;
 
 	$('#page_1').show();
@@ -179,9 +234,8 @@ function showStartPage() {
 }
 
 function showChoosePage() {
-	video.pause();
-	video.src = 'video/big_buck_bunny_480p.ogg';
 	data = null;
+	$('.btn.next').attr('disabled',true);
 
     // Check for the various File API support.
     if (!(window.File && window.FileReader && window.FileList && window.Blob)) {
@@ -199,38 +253,60 @@ function showMainPage() {
 	$('#page_2').hide();
 	$('#page_3').show();
 
-	$('#interface').slideToggle();
+	if(currentOverlay == 'patient') {
+		$('#overlay').attr('src','img/patientdata.png');
+	}
+	if(currentOverlay == 'example') {
+		$('#overlay').attr('src','img/exampledata.png');
+	}
 
-	setTimeout(function() {
-		video.pause();
+	if(sourceFlag == 'video') {
+		$(video).html('');
+
+		video.src = 'video/vid1.mp4';
 		video.play();
-	}, 5000);
+
+		fg.video = video;
+	}
+
+	if(sourceFlag == 'webcam') {
+		window.URL = window.URL || window.webkitURL;
+		navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+		navigator.getUserMedia(
+			{audio: false, video:true},
+			function (stream) {
+				localMediaStream = stream;
+				//video = document.querySelector('video');
+				video.src = window.URL.createObjectURL(stream);
+				video.onloadedmetadata = function(e) {
+					e.target.play();
+
+					fg.video = video;
+				};
+			},
+			function (err) {
+				console.log("The following error occured: " + err);
+			});
+
+		if (!Glsl.supported()) {
+			alert('WebGL is not supported.');
+			return false;
+		}
+	}
+
+	if(currentEffect) {
+		fg.setEffect(currentEffect);
+	}
 }
 
 function getRangeValue () {
 	return $('.slider [type=range]').val();
 }
 
-function WebGlSupport() {
-	window.URL = window.URL || window.webkitURL;
-	navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-	navigator.getUserMedia({video:true,audio:false}, gotStream, gotError);
+function drawBlack () {
+	var ctx = output.getContext("2d");
 
-	if (!Glsl.supported()) {
-		alert('WebGL is not supported.');
-		return false;
-	}
-	return true;
-}
-
-function gotStream(stream) {
-	localMediaStream = stream;
-	video.src = window.URL.createObjectURL(stream);
-	video.play();
-}
-
-function gotError() {
-	console.log("error happened");
+	ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
 }
 
 function map (value, start1, stop1, start2, stop2) {
@@ -239,4 +315,91 @@ function map (value, start1, stop1, start2, stop2) {
 		return 0;
 	}
 	return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
+}
+
+function sliderClick () {
+	var value = getRangeValue();
+	var effect = fg.getEffect();
+	var defaultValues = {};
+
+	//console.log(value, effect);
+
+	if(!effect) {
+		console.log('kein Effect');
+		return false;
+	}
+	if (isNaN(value)) {
+		console.log('keine Value');
+		return false;
+	};
+
+	currentValue = value;
+
+	var _map = map(value, 0,100, 0,20);
+
+	switch (effect) {
+		case JSManipulate['blur']:
+			defaultValues = {
+				amount : map(value, 0,100, 0,20)
+			}; break;
+		case  JSManipulate['pinch']:
+			defaultValues = {
+				amount : map(value, 0,100, 0,1),
+				radius : map(value, 0,100, 0,500),
+				angle : 0,
+				centerX : 0.5,
+				centerY : 0.5
+			}; break;
+		case  JSManipulate['rgbadjust']:
+			defaultValues = {
+				red: map(value, 0,100, 1,0),
+				green: map(value, 0,100, 1,0.5),
+				blue: 1.0
+			}; break;
+		case JSManipulate['sepia']:
+			defaultValues = {
+				amount : map(value, 0,100, 0,30)
+			}; break;
+		case JSManipulate['redgreen']:
+			defaultValues = {
+				r : map(value, 0,100, 0,10),
+				g : map(value, 0,100, 0,10),
+				b : map(value, 0,100, 0,10),
+			}; break;
+	}
+
+	fg.effect.defaultValues = defaultValues;
+}
+
+
+function resizeCanvas() {
+	//console.log('window',$(window).width() , $(window).height());
+
+	if($(window).width() >= $(window).height()*videoResolution) {
+
+		var dif = $(window).height() * videoWidth / videoHeight;
+		$('.content').width(dif);
+		$('.content').height($(window).height());
+
+		$('#output').width(dif);
+		$('#output').height($(window).height());
+
+		$('#overlay').width(dif);
+		$('#overlay').height($(window).height());
+
+		//console.log('content width',$('.content').width() , $('.content').height());
+	} else {
+		var dif = $(window).width() * videoHeight / videoWidth;
+		$('.content').height(dif);
+		$('.content').width($(window).width());
+
+
+		$('#output').height(dif);
+		$('#output').width($(window).width());
+
+		$('#overlay').height(dif);
+		$('#overlay').width($(window).width());
+
+		//console.log('content height',$('.content').width() , $('.content').height());
+	}
 }

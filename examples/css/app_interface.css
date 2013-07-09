@@ -27,10 +27,18 @@ background: black  url(../img/data_bg.jpg) center center no-repeat;
 #video, #webcam {
 	display: none;
 }
-#output {
-	display: block;
-	margin: auto;
-	height: 100%;
+.content {
+	position: absolute;
+	left: 50%; top: 50%;
+	transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
+	background: red;
+}
+#output, #overlay {
+	position: absolute;
+	left: 0; top: 0;
+	width: auto;
+	height: auto;
 }
 
 .choose {
@@ -39,7 +47,7 @@ background: black  url(../img/data_bg.jpg) center center no-repeat;
 	height: 700px;
 	top: 50%;
 	left: 50%;
-	margin: -325px 0px 0px -350px;
+	margin: -200px 0px 0px -350px;
 }
 
 .choose .description  {
@@ -50,7 +58,7 @@ background: black  url(../img/data_bg.jpg) center center no-repeat;
 
 .choose .box {
 	position: absolute;
-	top: 250px;
+	top: 280px;
 	width: 300px;
 	text-align: center;
 }
@@ -95,7 +103,7 @@ background: black  url(../img/data_bg.jpg) center center no-repeat;
 	left: 0;
 	top: 0;
 	width: 100%;
-	z-index: 999;
+	z-index: 1000;
 	background: black;
 }
 .interface_wrapper .button {
@@ -191,4 +199,25 @@ background: black  url(../img/data_bg.jpg) center center no-repeat;
 }
 .slideThree input[type=checkbox]:checked + label {
 	left: 43px;
+}
+
+.slideThree.disabled:before {
+	color: rgb(165, 165, 165);
+}
+.slideThree.disabled:after {
+	color: rgb(165, 165, 165);
+}
+.slideThree.disabled label {
+	background: -moz-linear-gradient(center top , #B6B7B2 0%, #9DA097 40%, #5C605A 100%) repeat scroll 0 0 transparent;
+	color: rgb(73,73,73);
+	cursor: default;
+}
+
+.slider.disabled .slider-track {
+	background-color: #A5A5A5;
+	background-image: linear-gradient(to bottom, #A5A5A5, #A8A8A8);
+	cursor: default;
+}
+.slider.disabled .slider-handle {
+	background-color: #47A0AA;
 }
