@@ -22,6 +22,7 @@
 		<link rel="stylesheet" href="css/app_interface.css" type="text/css">
 
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+		<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" /> 
     </head>
     <body>
         <!--[if lt IE 7]>
@@ -32,13 +33,13 @@
 
 			<!-- Begin Page 1 -->
 			<div id="page_1" class="page">
-				<div style="position:absolute;top:30px;left:50%;margin-left:-100px;z-index:999;"><img src="http://placehold.it/200x200"/></div>
+				<div style="position:absolute;top:30px;left:50%;margin-left:-100px;z-index:999;"><img src="img/logo.png"/></div>
 				<div class="choose">
 					<div class="description">
 						<h1>Herzlich Willkommen!</h1>
-						<p>Um die Simulation zu starten müssen Sie sich voerst entscheiden ob Sie Ihre realen Patientendaten verwenden möchten, oder nicht. Dann entscheiden Sie sich bitte noch ob Sie das Realbild Ihrer Webcam für die Simulation verwenden möchten, oder ein von uns vorgefertigtes Video. Nutzen Sie nun den Ihren Wünschen entsprechenden unten stehenden Link.</p>
+						<p>Um die Simulation zu starten müssen Sie sich voerst entscheiden ob Sie reale Patientendaten verwenden möchten, oder nicht. Dann können Sie sich noch entscheiden ob sie sich selbst sehen möchten, wie der Erkrankte Sie sieht (Webcam), oder ob Sie den Blick des Patienten auf eine Straßen-Szenerie erfahren möchten (Video). Nutzen Sie dafür den Ihren Wünschen entsprechenden unten stehenden Link.</p>
 						
-						<p>Sollten Sie sich für die Patientendaten enscheiden die sie von Ihrem Augenarzt erhalten haben, laden Sie im Anschluss bitte die mitgegebene Datei hoch.</p>
+						<p>Sollten Sie sich für die Patientendaten enscheiden die sie von Ihrem Augenarzt erhalten haben, haben Sie die Möglichkeit diese im Anschluss an Ihre Auswahl hochzuladen.</p>
 					</div>
 					<div class="box left">
 						<h2>Patientendaten</h2>
@@ -111,7 +112,7 @@
 				</div>
 
 				<div class="content">
-					<video id="video" muted></video>
+					<video id="video" muted loop></video>
 					<canvas id="output" width="800" height="600"></canvas>
 				</div>
 			</div>

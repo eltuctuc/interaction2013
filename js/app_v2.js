@@ -241,7 +241,7 @@ function showMainPage() {
 	if(sourceFlag == 'video') {
 		$(video).html('');
 
-		video.src = 'video/big_buck_bunny_480p.ogg';
+		video.src = 'video/vid1.mp4';
 		video.play();
 
 		fg.video = video;
