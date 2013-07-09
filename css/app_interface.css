@@ -27,15 +27,18 @@ background: black  url(../img/data_bg.jpg) center center no-repeat;
 #video, #webcam {
 	display: none;
 }
-#output,
-#overlay {
+.content {
 	position: absolute;
-	left: 0;  0;
-	transform: tanslate(0, 0);
-
-	display: block;
-	margin: auto;
-	height: 100%;
+	left: 50%; top: 50%;
+	transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
+	background: red;
+}
+#output, #overlay {
+	position: absolute;
+	left: 0; top: 0;
+	width: auto;
+	height: auto;
 }
 
 .choose {

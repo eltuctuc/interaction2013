@@ -1,5 +1,6 @@
 var output, input, video, webcam;
 var outputResolution, videoResolution;
+var videoWidth, videoHeight;
 var source;
 var sourceFlag;
 var diseaseFlag = true;
@@ -17,7 +18,14 @@ $(document).ready(function($) {
 	//$(video).prop('muted', true);
 	video = document.getElementById('video');
 
-	videoResolution = 1920/1080;
+	videoWidth = 1920;
+	videoHeight = 1080;
+	videoResolution = videoWidth/videoHeight;
+
+	resizeCanvas();
+	$(window).resize(function() {
+		resizeCanvas();
+	})
 
 	/*setInterval(function() {
 		location.reload();
@@ -215,13 +223,6 @@ $(document).ready(function($) {
 		    // Read in the image file as a data URL.
 		    reader.readAsText(file);
 		});
-
-	$(window).bind('load' ,function() {
-		setOutputDimension();
-	});
-	$(window).bind('resize' ,function() {
-		setOutputDimension();
-	});
 });
 
 function showStartPage() {
@@ -251,8 +252,6 @@ function showMainPage() {
 	$('#page_1').hide();
 	$('#page_2').hide();
 	$('#page_3').show();
-
-	setOutputDimension();
 
 	if(currentOverlay == 'patient') {
 		$('#overlay').attr('src','img/patientdata.png');
@@ -372,33 +371,35 @@ function sliderClick () {
 	fg.effect.defaultValues = defaultValues;
 }
 
-function setOutputDimension () {
-	res = $(video).width()/$(video).height();
-	outputResolution = $(window).innerWidth()/$(window).innerHeight();
 
-	if(!isNaN(res)) {
-		videoResolution = res;
-	}
+function resizeCanvas() {
+	//console.log('window',$(window).width() , $(window).height());
 
-	if(outputResolution > videoResolution) {
-		$(output).height($(window).innerHeight());
-		$(output).width($(window).innerHeight()*videoResolution);
+	if($(window).width() >= $(window).height()*videoResolution) {
 
-		$('#overlay').height($(window).innerHeight());
-		$('#overlay').width($(window).innerHeight()*videoResolution);
+		var dif = $(window).height() * videoWidth / videoHeight;
+		$('.content').width(dif);
+		$('.content').height($(window).height());
+
+		$('#output').width(dif);
+		$('#output').height($(window).height());
+
+		$('#overlay').width(dif);
+		$('#overlay').height($(window).height());
+
+		//console.log('content width',$('.content').width() , $('.content').height());
 	} else {
-		$(output).height($(window).innerWidth()/videoResolution);
-		$(output).width($(window).innerWidth());
-		
-		$('#overlay').height($(window).innerWidth()/videoResolution);
-		$('#overlay').width($(window).innerWidth());
+		var dif = $(window).width() * videoHeight / videoWidth;
+		$('.content').height(dif);
+		$('.content').width($(window).width());
+
+
+		$('#output').height(dif);
+		$('#output').width($(window).width());
+
+		$('#overlay').height(dif);
+		$('#overlay').width($(window).width());
+
+		//console.log('content height',$('.content').width() , $('.content').height());
 	}
-}
-
-function resizeWindow() {
-
-}
-
-function resizeOverlay() {
-	
 }

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<meta name="viewport" content="width=device-width">
+
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+
+	<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+
+	<link rel="stylesheet" href="css/range-slider.css">
+	<link rel="stylesheet" href="css/radio-style.css">
+	<link rel="stylesheet" href="css/checkbox-style.css">
+
+    <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
+
+	<style type="text/css">
+	
+	.content {
+		position: absolute;
+		left: 50%; top: 50%;
+		transform: translate(-50%, -50%);
+		-webkit-transform: translate(-50%, -50%);
+		background: red;
+	}
+	#output, #overlay {
+		position: absolute;
+		left: 0; top: 0;
+		width: auto;
+		height: auto;
+	}
+
+	</style>
+</head>
+<body>
+	<div class="content">
+		test
+	</div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script type="text/javascript">
+var videoResolution, outputResolution;
+var videoWidth, videoHeight;
+
+$(document).ready(function() {
+	videoWidth = 1920;
+	videoHeight = 1080;
+	videoResolution = videoWidth/videoHeight;
+
+	resizeCanvas();
+	$(window).resize(function() {
+		resizeCanvas();
+	})
+
+});
+
+function resizeCanvas() {
+	console.log('window',$(window).width() , $(window).height());
+
+	if($(window).width() >= $(window).height()*videoResolution) {
+		$('.content').height($(window).height());
+
+		var dif = $(window).height() * videoWidth / videoHeight;
+		$('.content').width(dif);
+		console.log('content width',$('.content').width() , $('.content').height());
+	} else {
+		$('.content').width($(window).width());
+
+		var dif = $(window).width() * videoHeight / videoWidth;
+		$('.content').height(dif);
+		console.log('content height',$('.content').width() , $('.content').height());
+	}
+}
+</script>
+</body>
+</html>
