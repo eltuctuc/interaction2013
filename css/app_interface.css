@@ -50,7 +50,7 @@ background: black  url(../img/data_bg.jpg) center center no-repeat;
 
 .choose .box {
 	position: absolute;
-	top: 250px;
+	top: 280px;
 	width: 300px;
 	text-align: center;
 }
