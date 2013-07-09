@@ -4,6 +4,7 @@ var source;
 var sourceFlag;
 var diseaseFlag = true;
 var currentEffect = '', currentValue = 0;
+var currentOverlay;
 var fg;
 var localMediaStream;
 
@@ -15,6 +16,8 @@ $(document).ready(function($) {
 	//$(video).attr('id', 'video');
 	//$(video).prop('muted', true);
 	video = document.getElementById('video');
+
+	videoResolution = 1920/1080;
 
 	/*setInterval(function() {
 		location.reload();
@@ -147,12 +150,14 @@ $(document).ready(function($) {
 	$('#dataWebcamButton')
 		.bind('click', function(event) {
 			sourceFlag = 'webcam';
+			currentOverlay = 'patient';
 			showChoosePage();
 		});
 
 	$('#dataVideoButton')
 		.bind('click', function(event) {
 			sourceFlag = 'video';
+			currentOverlay = 'patient';
 			showChoosePage();
 		});
 
@@ -160,12 +165,14 @@ $(document).ready(function($) {
 	$('#nodataWebcamButton')
 		.bind('click', function(event) {
 			sourceFlag = 'webcam';
+			currentOverlay = 'example';
 			showMainPage();
 		});
 
 	$('#nodataVideoButton')
 		.bind('click', function(event) {
 			sourceFlag = 'video';
+			currentOverlay = 'example';
 			showMainPage();
 		});
 
@@ -208,6 +215,13 @@ $(document).ready(function($) {
 		    // Read in the image file as a data URL.
 		    reader.readAsText(file);
 		});
+
+	$(window).bind('load' ,function() {
+		setOutputDimension();
+	});
+	$(window).bind('resize' ,function() {
+		setOutputDimension();
+	});
 });
 
 function showStartPage() {
@@ -237,6 +251,15 @@ function showMainPage() {
 	$('#page_1').hide();
 	$('#page_2').hide();
 	$('#page_3').show();
+
+	setOutputDimension();
+
+	if(currentOverlay == 'patient') {
+		$('#overlay').attr('src','img/patientdata.png');
+	}
+	if(currentOverlay == 'example') {
+		$('#overlay').attr('src','img/exampledata.png');
+	}
 
 	if(sourceFlag == 'video') {
 		$(video).html('');
@@ -347,4 +370,35 @@ function sliderClick () {
 	}
 
 	fg.effect.defaultValues = defaultValues;
+}
+
+function setOutputDimension () {
+	res = $(video).width()/$(video).height();
+	outputResolution = $(window).innerWidth()/$(window).innerHeight();
+
+	if(!isNaN(res)) {
+		videoResolution = res;
+	}
+
+	if(outputResolution > videoResolution) {
+		$(output).height($(window).innerHeight());
+		$(output).width($(window).innerHeight()*videoResolution);
+
+		$('#overlay').height($(window).innerHeight());
+		$('#overlay').width($(window).innerHeight()*videoResolution);
+	} else {
+		$(output).height($(window).innerWidth()/videoResolution);
+		$(output).width($(window).innerWidth());
+		
+		$('#overlay').height($(window).innerWidth()/videoResolution);
+		$('#overlay').width($(window).innerWidth());
+	}
+}
+
+function resizeWindow() {
+
+}
+
+function resizeOverlay() {
+	
 }
