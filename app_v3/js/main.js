@@ -15,7 +15,6 @@ $(document).ready(function() {
 
 	$('.dropdown button')
 		.bind('click',function (event) {
-			console.log(42);
 			$('#interface').slideToggle();
 		});
 
@@ -29,7 +28,15 @@ $(document).ready(function() {
 	resizeCanvas();
 	$(window).resize(function() {
 		resizeCanvas();
-	})
+	});
+
+
+	$('.slider')
+		.slider()
+		.bind('slide', function() {
+			sliderClick();
+		});
+
 
 	var hash = window.location.hash;
 
@@ -44,11 +51,7 @@ $(document).ready(function() {
 });
 
 function getRangeValue () {
-	return $('.slider').val();
-}
-
-function sliderClick () {
-	var value = getRangeValue();
+	return $('.slider [type=range]').val();
 }
 
 
@@ -103,7 +106,7 @@ function sliderClick () {
 	var effect = fg.getEffect();
 	var defaultValues = {};
 
-	//console.log(value, effect);
+	console.log(value, effect);
 
 	if(!effect) {
 		console.log('kein Effect');

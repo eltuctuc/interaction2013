@@ -14,9 +14,6 @@ $(document).ready(function() {
 	});
 
 
-	$('.slider').slider().bind('change', sliderClick);
-
-
 	$('#disease')
 		.bind('click', function(event) {
 			if(diseaseFlag) {

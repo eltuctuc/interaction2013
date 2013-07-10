@@ -322,7 +322,7 @@ function sliderClick () {
 	var effect = fg.getEffect();
 	var defaultValues = {};
 
-	//console.log(value, effect);
+	77console.log(value, effect);
 
 	if(!effect) {
 		console.log('kein Effect');
