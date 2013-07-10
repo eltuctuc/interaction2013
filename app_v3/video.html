@@ -28,20 +28,10 @@
 	<!--[if lt IE 7]>
 	    <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
 	<![endif]-->
-	<video id="video" muted loop autoplay>
-		<source src="video/vid1.webm">
-	</video>
-	<canvas id="output"></canvas>
-	<img id="overlay" style="display:none" />
 
-	<div style="position: absolute;right: 1em;top: 1em;">
-		<button type="button" class="btn" id="settingOpen">Einstellungen</button>
-	</div>
 
-	<!--<div id="pageslide" style="left: auto; right: 0px; display: block;">-->
-		
-		<div id="interface_wrapper">
-			<h2>Einstellungen</h2>
+	<div class="interface_wrapper">
+		<div id="interface">
 			<div class="column">
 				<button class="btn" id="back"><i class="icon-home"></i> Zurück zum Start</button>
 				<div class="slideThree">
@@ -50,16 +40,13 @@
 
 				<div class="range">
 					<p>Regeln Sie hier die Intensität Ihrer Beeinträchtigung.</p>
-					<input type="range" class="slider">
+					<input type="range" class="slider" data-slider-max="100" data-slider-step="1" data-slider-tooltip="hide">
 				</div>
-				<!--<div>
-					<button id="videoButton" type="button">PLAY/PAUSE</button>
-				</div>-->
 			</div>
 			<div class="column">
 				<div class="filter_group">
 					<p>Wählen Sie die Beeinträchtigung/en für Ihre Simulation aus:</p>
-					<div action="#" class="filters">
+					<div class="filters">
 						<div class="slideThree" id="glaucoma">
 							<input name="radio" type="radio" id="glaucomaButton"><label for="glaucomaButton">Glaukom</label>
 						</div>
@@ -75,11 +62,16 @@
 					</div>
 				</div>
 			</div>
-			<div style="margin-top: 1em;">
-				<button type="button" class="btn" id="settingClose">Schliessen</button>
-			</div>
 		</div>
-	<!--</div>-->
+		<div class="dropdown"><button type="button">Einstellungen</button></div>
+	</div>
+
+
+	<video id="video" muted loop autoplay>
+		<source src="video/vid1.webm">
+	</video>
+	<canvas id="output"></canvas>
+	<img id="overlay" style="display:none" />
 
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script>window.jQuery || document.write('<script src="js/jquery-1.9.1.min.js"><\/script>')</script>

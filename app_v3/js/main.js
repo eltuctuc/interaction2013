@@ -10,6 +10,14 @@ var fg;
 var localMediaStream;
 
 $(document).ready(function() {
+	
+	$('#interface').slideToggle();
+
+	$('.dropdown button')
+		.bind('click',function (event) {
+			console.log(42);
+			$('#interface').slideToggle();
+		});
 
 	output = document.getElementById('output');
 	video = document.getElementById('video');

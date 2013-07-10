@@ -63,6 +63,8 @@ $(document).ready(function() {
 			fg.setEffect('pinch');
 
 			currentEffect = 'pinch';
+
+			$('#overlay').show();
 		});
 	$('#kataraktButton')
 		.bind('change', function (event) {
@@ -74,6 +76,8 @@ $(document).ready(function() {
 			};
 
 			currentEffect = 'blur';
+
+			$('#overlay').hide();
 		});
 	$('#protanopieButton')
 		.bind('change', function (event) {
@@ -91,6 +95,8 @@ $(document).ready(function() {
 			};
 
 			currentEffect = 'rgbadjust';
+			
+			$('#overlay').hide();
 		});
 	$('#dyschromatopsieButton')
 		.bind('change', function (event) {
@@ -109,5 +115,7 @@ $(document).ready(function() {
 			};
 
 			currentEffect = 'redgreen';
+			
+			$('#overlay').hide();
 		});
 });

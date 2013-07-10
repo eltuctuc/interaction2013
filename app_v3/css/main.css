@@ -88,7 +88,7 @@ body {
 	font-weight: bold;
 }
 
-#interface_wrapper {
+/*#interface_wrapper {
 	display: none;
 	position: absolute;
 	top: 0;
@@ -109,4 +109,129 @@ body {
 	-moz-transition:all 1.0s ease-in-out;
 	-o-transition:all 1.0s ease-in-out;
 	transition:all 1.0s ease-in-out;
+}*/
+
+
+.interface_wrapper {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	z-index: 1000;
+	background: black;
+}
+.interface_wrapper .button {
+	display: block;
+	width: 200px;
+	margin: 30px 0 30px;
+	background: rgb(60, 62, 64);
+	color: white;
+	font-weight: lighter;
+	text-align: center;
+	vertical-align: middle;
+	border-radius: 3px;
+	text-decoration: none;
+}
+#interface {
+	position: relative;
+	left: 50%;
+	width: 60%;
+	padding-top: 20px; 
+	margin-left: -30%; 
+}
+#interface .column {
+	display: inline-block;
+	vertical-align: top;
+	width: 49%;
+}
+#interface .range {
+	margin-top: 20px;
+}
+.interface_wrapper .dropdown {
+	position: relative;
+	width: 200px;
+	line-height: 20px;
+	left: 50%;
+	margin-left: -100px;
+	background: black;
+}
+.interface_wrapper .dropdown:after {
+	content: "";
+	position: absolute;
+	width: 0;
+	height: 0;
+	border-width: 20px;
+	border-color: transparent;
+	border-style: solid;
+	border-top-color: black;
+	bottom: -40px;
+	left: 80px;
+}
+.interface_wrapper .dropdown button {
+	width: 200px;
+	text-transform: uppercase;
+	text-decoration: none;
+	background: black;
+	color: white;
+	border: none;
+	padding: 10px 10px 10px;
+}
+
+/* RANGE SLIDER */
+.slider-handle {
+  background: rgb(101, 227, 242);
+  opacity: 1;
+}
+.slider .tooltip-inner {
+  background: rgb(31, 69, 73);
+  color: rgb(255, 255, 255);
+}
+.slider input[type=range] {
+  visibility: hidden;
+}
+
+/* SLIDE TOGGLE BUTTON */
+.slideThree {
+	display: inline-block;
+	width: 160px;
+	margin: 20px 1em 0 0;
+}
+.slideThree:before {
+  color: rgb(101, 227, 242);
+  content: "AN";
+}
+.slideThree:after {
+  color: rgb(101, 227, 242);
+  content: "AUS";
+}
+.slideThree label {
+	width: 110px;
+	width: 110px;
+	color: #3c3e40;
+	padding: 0 3px;
+	text-align: center;
+}
+.slideThree input[type=checkbox]:checked + label {
+	left: 43px;
+}
+
+.slideThree.disabled:before {
+	color: rgb(165, 165, 165);
+}
+.slideThree.disabled:after {
+	color: rgb(165, 165, 165);
+}
+.slideThree.disabled label {
+	background: -moz-linear-gradient(center top , #B6B7B2 0%, #9DA097 40%, #5C605A 100%) repeat scroll 0 0 transparent;
+	color: rgb(73,73,73);
+	cursor: default;
+}
+
+.slider.disabled .slider-track {
+	background-color: #A5A5A5;
+	background-image: linear-gradient(to bottom, #A5A5A5, #A8A8A8);
+	cursor: default;
+}
+.slider.disabled .slider-handle {
+	background-color: #47A0AA;
 }
