@@ -10,7 +10,7 @@ var fg;
 var localMediaStream;
 
 $(document).ready(function() {
-	
+
 	$('#interface').slideToggle();
 
 	$('.dropdown button')
@@ -36,7 +36,7 @@ $(document).ready(function() {
 	if(hash == '#patient') {
 		$('#overlay').attr('src','img/patientdata.png');
 	}
-	if(hash == 'example') {
+	if(hash == '#example') {
 		$('#overlay').attr('src','img/exampledata.png');
 	}
 
