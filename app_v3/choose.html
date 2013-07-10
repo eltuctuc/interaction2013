@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>Sichtfilter App 0.1.0</title>
+	<meta name="viewport" content="width=device-width">
+
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+
+	<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+
+	<link rel="stylesheet" href="css/main.css" type="text/css">
+
+	<script src="js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" /> 
+</head>
+<body>
+	<!--[if lt IE 7]>
+	<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+	<![endif]-->
+
+	<div class="bg" id="choose">
+        <div class="container">
+			<div id="logo"><img src="img/logo.png"/></div>
+			<div class="description">
+				<h1>Patientendaten laden</h1>
+				<p><input id="upload" type="file"></p>
+			</div>
+			<div class="box left">
+				<br>
+				<button class="btn" id="back">zurück</button>
+			</div>
+			<div class="box right">
+				<br>
+				<button class="btn" id="next">weiter</button>
+			</div>
+        </div>
+    </div>
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="js/jquery-1.9.1.min.js"><\/script>')</script>
+	<script src="js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+
+$(document).ready(function() {
+	$('#back').bind('click',function() {
+		$(location).attr('href','index.html');
+	});
+
+	$('#next')
+		.addClass('disabled')
+		.attr('disabled', true)
+		.bind('click',function() {
+			var hash = window.location.hash;
+
+			console.log(hash);
+			if(hash == '#webcam') {
+				$(location).attr('href','webcam.html#patient');
+			} else if(hash == '#video') {
+				$(location).attr('href','video.html#patient');
+			} else {
+				$(location).attr('href','index.html');
+			}
+		});
+
+    // Check for the various File API support.
+    if (!(window.File && window.FileReader && window.FileList && window.Blob)) {
+        // Great success! All the File APIs are supported.
+        alert('The File APIs are not fully supported in this browser.');
+        $(location).attr('href','index.html');
+    }
+
+	$('#upload')
+		.bind('change',function(event) {
+		    var reader = new FileReader();
+
+		    var files = event.target.files;
+		    var file = files[0];
+
+		    reader.onload = (function(f) {
+		        return function(e) {
+		            /*var content = e.target.result;
+		            var name = escape(f.name);
+
+		            data = JSON.parse(content);*/
+					$('#next')
+						.attr('disabled',false)
+						.removeClass('disabled');
+		        };
+		    })(file);
+
+		    // Read in the image file as a data URL.
+		    reader.readAsText(file);
+		});
+});
+
+	</script>
+</body>
+</html>
