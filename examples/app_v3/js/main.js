@@ -8,6 +8,7 @@ var currentEffect = '', currentValue = 0;
 var currentOverlay;
 var fg;
 var localMediaStream;
+var hash;
 
 $(document).ready(function() {
 
@@ -31,26 +32,33 @@ $(document).ready(function() {
 	});
 
 
-	$('.slider')
-		.slider()
-		.bind('slide', function() {
-			sliderClick();
-		});
-
-
-	var hash = window.location.hash;
+	hash = window.location.hash;
 
 	if(hash == '#patient') {
 		$('#overlay').attr('src','img/patientdata.png');
+
+		$('.slider').addClass('disabled');
+		$('.slider').attr('disabled', true);
+		$('.slider').val(50);
 	}
 	if(hash == '#example') {
 		$('#overlay').attr('src','img/exampledata.png');
+
+
+		$('.slider')
+			.slider()
+			.bind('slide', function() {
+				sliderClick();
+			});
 	}
 
 	fg = new FrameGrabber(video, output);
 });
 
 function getRangeValue () {
+	if(hash == '#patient') {
+		return 50;
+	}
 	return $('.slider [type=range]').val();
 }
 
@@ -143,6 +151,10 @@ function sliderClick () {
 		case JSManipulate['sepia']:
 			defaultValues = {
 				amount : map(value, 0,100, 0,30)
+			}; break;
+		case JSManipulate['saturation']:
+			defaultValues = {
+				amount : map(value, 0,100, 1,0)
 			}; break;
 		case JSManipulate['redgreen']:
 			defaultValues = {

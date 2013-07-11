@@ -30,9 +30,14 @@ $(document).ready(function() {
 				$('#dyschromatopsie').addClass('disabled');
 				$('#dyschromatopsieButton').attr('disabled', true);
 
+				if(hash == '#example') {
+					$('.slider').addClass('disabled');
+					$('.slider').attr('disabled', true);
+				}
 
-				$('.slider').addClass('disabled');
-				$('.slider').attr('disabled', true);
+				if(currentEffect == 'pinch') {
+					$('#overlay').hide();
+				}
 			} else {
 				diseaseFlag = true;
 
@@ -47,9 +52,13 @@ $(document).ready(function() {
 				$('#dyschromatopsie').removeClass('disabled');
 				$('#dyschromatopsieButton').attr('disabled', false);
 
-
-				$('.slider').removeClass('disabled');
-				$('.slider').attr('disabled', false);
+				if(hash == '#example') {
+					$('.slider').removeClass('disabled');
+					$('.slider').attr('disabled', false);
+				}
+				if(currentEffect == 'pinch') {
+					$('#overlay').show();
+				}
 			}
 		});
 
@@ -99,19 +108,20 @@ $(document).ready(function() {
 		.bind('change', function (event) {
 			var value = getRangeValue();
 
-			/*fg.setEffect('sepia');
+			fg.setEffect('saturation');
 			fg.effect.defaultValues = {
-				amount : map(value, 0,100, 0,30)
-			};*/
+				amount : map(value, 0,100, 1,0)
+			};
 
-			fg.setEffect('redgreen');
+			/*fg.setEffect('redgreen');
 			fg.effect.defaultValues = {
 				r : map(value, 0,100, 0,1),
 				g : map(value, 0,100, 0,1),
 				b : map(value, 0,100, 0,1),
-			};
+			};*/
 
-			currentEffect = 'redgreen';
+			//currentEffect = 'redgreen';
+			currentEffect = 'saturation';
 			
 			$('#overlay').hide();
 		});
