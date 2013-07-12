@@ -20,7 +20,7 @@ body {
 	background-size: cover;
 }
 }
-#start {
+#splash {
 	background: black  url(../img/start_bg.jpg) center center no-repeat;
 }
 #choose {
