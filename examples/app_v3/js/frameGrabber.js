@@ -37,7 +37,7 @@ function FrameGrabber(video,canvas) {
         var self = this;
         setTimeout(function () {
             self.timerCallback();
-          }, 40);
+          }, 20);
     };
 
     this.acquireFrame = function() {
